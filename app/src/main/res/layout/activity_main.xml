@@ -43,13 +43,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
 
-    <LinearLayout
-        android:id="@+id/currDayLayout"
+    <ScrollView
+        android:id="@+id/currDayView"
         android:layout_width="409dp"
         android:layout_height="324dp"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView"/>
+        app:layout_constraintTop_toBottomOf="@+id/calendarView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
