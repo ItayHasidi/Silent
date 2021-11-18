@@ -7,12 +7,49 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Silent"
+        android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <Button
+        android:id="@+id/sideBarBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="54dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="90dp"
+        android:onClick="openSideMenu"
+        app:icon="@android:drawable/ic_dialog_dialer"
+        app:iconTint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTitle"
+        app:layout_constraintEnd_toStartOf="@+id/txtTitle"
+        app:layout_constraintTop_toTopOf="@+id/txtTitle"
+        app:rippleColor="#000000"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="384dp"
+        android:layout_height="314dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+    <LinearLayout
+        android:id="@+id/currDayLayout"
+        android:layout_width="409dp"
+        android:layout_height="324dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
