@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <!--Select one item from the group below-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main_menu"
+            android:icon="@drawable/ic_main_menu"
+            android:title="Main Menu" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_sync_now"
+            android:icon="@drawable/ic_sync_now"
+            android:title="Sync Now" />
+        <item
+            android:id="@+id/nav_premium"
+            android:icon="@drawable/ic_premium"
+            android:title="Premium" />
+    </group>
+</menu>
