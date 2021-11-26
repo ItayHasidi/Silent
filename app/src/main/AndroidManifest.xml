@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Silent_ver_1">
         <activity
+            android:name=".NavDrawer"
+            android:exported="false"
+            android:label="@string/title_activity_nav_drawer"
+            android:theme="@style/Theme.Silent_ver_1.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
