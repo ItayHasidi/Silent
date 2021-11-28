@@ -1,4 +1,4 @@
-package com.example.silent_ver_1.ui.syncNow;
+package com.example.silent_ver_1.ui.syncnow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,21 +12,21 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.silent_ver_1.databinding.FragmentSyncnowBinding;
+import com.example.silent_ver_1.databinding.FragmentSyncNowBinding;
 
 public class SyncNowFragment extends Fragment {
     private SyncNowViewModel syncNowViewModel;
-    private FragmentSyncnowBinding binding;
+    private FragmentSyncNowBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         syncNowViewModel =
                 new ViewModelProvider(this).get(SyncNowViewModel.class);
 
-        binding = FragmentSyncnowBinding.inflate(inflater, container, false);
+        binding = FragmentSyncNowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSyncnow;
+        final TextView textView = binding.textSyncNow;
         syncNowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
