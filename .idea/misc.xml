@@ -10,6 +10,8 @@
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_sync_now.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_sync_options.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_main.xml" value="0.34601449275362317" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/app_bar_nav_drawer.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/content_nav_drawer.xml" value="0.34601449275362317" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_about.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_home.xml" value="0.34601449275362317" />
@@ -17,8 +19,10 @@
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_settings.xml" value="0.33152173913043476" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_slideshow.xml" value="0.3365036231884058" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_sync_now.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_sync_options.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_syncnow.xml" value="0.33152173913043476" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_syncoptions.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/nav_header_nav_drawer.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/menu/nav_drawer.xml" value="0.36666666666666664" />
       </map>
