@@ -1,18 +1,11 @@
 package com.example.silent_ver_1;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,8 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.silent_ver_1.databinding.FragmentRegisterBinding;
-import com.example.silent_ver_1.ui.register.RegisterFragment;
-import com.example.silent_ver_1.ui.register.RegisterViewModel;
+import com.example.silent_ver_1.ui.user.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private RegisterViewModel registerViewModel;
+    private UserViewModel userViewModel;
     private FragmentRegisterBinding binding;
     private Button registerBtn;
     private EditText mEmail, mPass, mConfPass;
@@ -107,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void btnLogin(View view){
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));// עוברים מסך
     }
 
 }
