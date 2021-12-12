@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "646393273132",
+    "project_id": "silent-android-application",
+    "storage_bucket": "silent-android-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646393273132:android:d2f91f5a78f49cabcb6a89",
+        "android_client_info": {
+          "package_name": "com.example.silent_ver_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "646393273132-d9v15vhh2h699lsuhmk9bf4pqeja0qcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB14Ow0AyNxqXZe_Ohik5dYIS8hTaNk_HM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "646393273132-d9v15vhh2h699lsuhmk9bf4pqeja0qcn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

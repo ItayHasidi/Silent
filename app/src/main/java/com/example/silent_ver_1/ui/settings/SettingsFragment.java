@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.silent_ver_1.databinding.FragmentSettingsBinding;
 
-
 public class SettingsFragment extends Fragment {
     private SettingsViewModel settingsViewModel;
     private FragmentSettingsBinding binding;

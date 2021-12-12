@@ -15,8 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.silent_ver_1.databinding.FragmentAboutBinding;
 
 public class AboutFragment extends Fragment {
-
-
     private AboutViewModel aboutViewModel;
     private FragmentAboutBinding binding;
 

@@ -25,6 +25,10 @@
             android:icon="@drawable/ic_sync_options"
             android:title="@string/sync_options" />
         <item
+            android:id="@+id/nav_register"
+
+            android:title="@string/register" />
+        <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"
             android:title="@string/about" />
