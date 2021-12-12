@@ -30,7 +30,6 @@ public class UserFragment extends Fragment {
     private FirebaseAuth mAuth;
     private Button stateBtn;
     private TextView uidText;
-//    private FragmentPremiumBinding/ binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,21 +56,13 @@ public class UserFragment extends Fragment {
             public void onClick(View view) {
                 if(currentUser != null){
                     FirebaseAuth.getInstance().signOut();
-//                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container,LoginActivity.class).commit();
                 }
                 startActivity(new Intent(getActivity(), LoginActivity.class));// עוברים מסך
             }
         });
 
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
-//
-//        final TextView textView = binding.textUserHead;
-//        settingsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+
         return root;
     }
 

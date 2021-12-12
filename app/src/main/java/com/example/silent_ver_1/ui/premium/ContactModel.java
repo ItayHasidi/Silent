@@ -22,53 +22,35 @@ public class ContactModel {
     public ContactModel(String name, String number, String currUser/*, Context context*/){
         this.name = name;
         this.number = number;
-        this.currUser = currUser;
-
         // retrieve the saved message from the database (Firebase)
-        DatabaseReference myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/").getReference(currUser);//.child(currUser);
+        DatabaseReference myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference(currUser);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot curSnapshot : snapshot.getChildren()) {
-//                    Log.i("ContactEditMessage", "snapshot & number: "+curSnapshot.getKey().toString()+" , "+number);
                     if (curSnapshot.getKey().toString().equals(number)) {
                         setMessage(curSnapshot.getValue().toString());
-//                        Log.i("ContactEditMessage", "current number and message: "+number+" , "+getMessage());
                         return;
                     }
                 }
                 setMessage("Can't talk, call you back later.");
-
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+            @Override public void onCancelled(@NonNull DatabaseError error) { }});
     }
-
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    public void setName(String name) { this.name = name; }
     public String getNumber() {
         return number;
     }
-
     public void setNumber(String number) {
         this.number = number;
     }

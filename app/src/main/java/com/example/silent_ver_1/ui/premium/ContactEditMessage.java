@@ -88,7 +88,6 @@ public class ContactEditMessage extends AppCompatActivity {
         mainAdapter.setOnItemClickListener(new MainAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                Toast.makeText(ContactEditMessage.this, "contact clicked: "+arrayList.get(position).getMessage(), Toast.LENGTH_LONG).show();
                 msg.setText(arrayList.get(position).getMessage());
                 curPosition = position;
             }
@@ -104,13 +103,11 @@ public class ContactEditMessage extends AppCompatActivity {
             Toast.makeText(ContactEditMessage.this, "Permission Denied", Toast.LENGTH_LONG).show();
             checkPermission();
         }
-
     }
 
     public void onSaveClick(View view){
         if(curPosition != -1){
             arrayList.get(curPosition).setMessage(msg.getText().toString());
-
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
             DatabaseReference myRef = database.getReference(currUser+"/"+arrayList.get(curPosition).getNumber());
             myRef.setValue(msg.getText().toString());

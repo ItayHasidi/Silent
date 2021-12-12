@@ -16,9 +16,6 @@ import com.example.silent_ver_1.R;
 
 import java.util.ArrayList;
 
-
-
-
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     Activity activity;
     ArrayList<com.example.silent_ver_1.ui.premium.ContactModel>arrayList;

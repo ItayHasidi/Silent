@@ -23,12 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private UserViewModel userViewModel;
-    private FragmentRegisterBinding binding;
-    private Button registerBtn;
     private EditText mEmail, mPass, mConfPass;
-    private Button mRegBtn;
-    private TextView mLoginBtn;
 
 
     @Override
@@ -58,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.email);
         mPass = findViewById(R.id.password);
         mConfPass = findViewById(R.id.password2);
-        mLoginBtn = findViewById(R.id.log_in_Btn);
 
         String email = mEmail.getText().toString().trim();
         String pass = mPass.getText().toString().trim();
@@ -84,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             mPass.setError(("Password Should be at least 6 characters long"));
             return;
         }
-
 
         mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
