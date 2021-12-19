@@ -5,25 +5,36 @@
       <map>
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13229166666666667" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/ic_about.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/ic_baseline_event_24.xml" value="0.2703125" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.14635416666666667" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/ic_settings.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/layou_border.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/layout_border.xml" value="0.16145833333333334" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/drawable/side_nav_bar.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_calendar.xml" value="0.12395833333333334" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_contact_edit_message.xml" value="0.25416666666666665" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.4" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.36328125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/activity_sync_calendar.xml" value="0.25416666666666665" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/app_bar_nav_drawer.xml" value="0.25416666666666665" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/content_nav_drawer.xml" value="0.25416666666666665" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_about.xml" value="0.25416666666666665" />
-        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_premium.xml" value="0.25416666666666665" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_register.xml" value="0.2" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_sync_now.xml" value="0.2" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/fragment_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/item_calendar_event.xml" value="0.536" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/item_contact.xml" value="0.19010416666666666" />
-        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/nav_header_nav_drawer.xml" value="0.25416666666666665" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/layout/nav_header_nav_drawer.xml" value="0.4" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/menu/activity_main_drawer.xml" value="0.4" />
         <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/menu/nav_drawer.xml" value="0.25416666666666665" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/mipmap-anydpi-v26/ic_icon_calendar.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/mipmap-anydpi-v26/ic_icon_calendar_round.xml" value="0.2703125" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.20208333333333334" />
+        <entry key="..\:/SilentApp/GITHUB/Silent_ver_1/app/src/main/res/mipmap-hdpi/ic_icon_calendar_round.xml" value="0.2703125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_about.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_main_page.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_premium.xml" value="0.3828125" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.silent_ver_1">
+    package="com.example.silent_ver_1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
@@ -9,15 +9,24 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon_calendar_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Silent_ver_1">
+        android:theme="@style/Theme.Silent_ver_1" >
+        <activity
+            android:name=".ui.premium.SyncCalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -28,11 +37,22 @@
         <receiver
             android:name=".ui.premium.callReceiver"
             android:exported="false"
-            tools:ignore="Instantiatable">
+            tools:ignore="Instantiatable" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.permission.READ_PHONE_NUMBERS" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".ui.home.CalendarEventReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
+                <action android:name="android.intent.action.READ_PRIVILEGED_PHONE_STATE" />
+
+                <data android:scheme="content" />
+                <data android:host="com.android.calendar" />
             </intent-filter>
         </receiver>
 
@@ -48,7 +68,7 @@
             android:theme="@style/Theme.Silent_ver_1.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

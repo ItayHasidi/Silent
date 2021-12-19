@@ -1,12 +1,20 @@
 package com.example.silent_ver_1;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.silent_ver_1.ui.home.CalendarEventReceiver;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,11 +23,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.silent_ver_1.databinding.ActivityNavDrawerBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class NavDrawer extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityNavDrawerBinding binding;
+    private Button headerBtn;
+    private TextView txtHeader;
+    private String username;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +53,50 @@ public class NavDrawer extends AppCompatActivity {
         ,R.id.nav_premium, R.id.nav_user, R.id.nav_about)
                 .setOpenableLayout(drawer)
                 .build();
+
+        View header = navigationView.getHeaderView(0);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        username = currentUser.getEmail();
+
+        headerBtn = header.findViewById(R.id.userBtnHeader);
+        txtHeader = header.findViewById(R.id.userTxtHeader);
+
+
+
+        if(currentUser != null){
+            headerBtn.setText("Logout");
+            txtHeader.setText("User: "+username);
+        }
+        else{
+            headerBtn.setText("Login");
+            txtHeader.setText("Please login");
+        }
+
+        headerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentUser != null){
+                    FirebaseAuth.getInstance().signOut();
+                }
+                startActivity(new Intent(NavDrawer.this, LoginActivity.class));// עוברים מסך
+            }
+        });
+
+
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_nav_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
+        filter.addDataScheme("content");
+        filter.addDataAuthority("com.android.calendar", null);
+        registerReceiver(new CalendarEventReceiver(), filter);
     }
 
 
@@ -51,5 +106,14 @@ public class NavDrawer extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_nav_drawer);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void checkPermission() {
+        if(ContextCompat.checkSelfPermission(NavDrawer.this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(NavDrawer.this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
+        }
+        if(ContextCompat.checkSelfPermission(NavDrawer.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(NavDrawer.this, new String[]{Manifest.permission.READ_PHONE_STATE}, 100);
+        }
     }
 }

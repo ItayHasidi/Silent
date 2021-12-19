@@ -1,8 +1,11 @@
 package com.example.silent_ver_1.ui.premium;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         com.example.silent_ver_1.ui.premium.ContactModel model = arrayList.get(position);
+        Log.i(TAG, "model: contact "+holder.tvName);
         holder.tvName.setText(model.getName());
         holder.tvNumber.setText(model.getNumber());
     }

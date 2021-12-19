@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Silent_ver_1</string>
+    <string name="app_name">Silent</string>
     <string name="title_contact_edit_message">Edit Messages</string>
     <string name="title_activity_nav_drawer">NavDrawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Silent</string>
+    <string name="nav_header_subtitle">github.com/Silent-App-Dev</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

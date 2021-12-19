@@ -18,6 +18,8 @@ import com.example.silent_ver_1.databinding.FragmentSyncOptionsBinding;
 public class SyncOptionsFragment extends Fragment {
     private SyncOptionsViewModel syncOptionsViewModel;
     private FragmentSyncOptionsBinding binding;
+    public long syncTimeMilli;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

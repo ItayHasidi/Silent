@@ -24,7 +24,7 @@ public class ContactModel {
         this.number = number;
         // retrieve the saved message from the database (Firebase)
         DatabaseReference myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference(currUser);
+                .getReference(currUser+"/Contacts");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

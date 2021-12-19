@@ -26,10 +26,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserFragment extends Fragment {
     private SettingsViewModel settingsViewModel;
     private FragmentUserBinding binding;
-    private String uid;
+    private String uid, email;
     private FirebaseAuth mAuth;
     private Button stateBtn;
-    private TextView uidText;
+    private TextView uidText, emailText;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,10 +39,13 @@ public class UserFragment extends Fragment {
         stateBtn = root.findViewById(R.id.button_state);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        uid = currentUser.getUid().toString();
+        uid = currentUser.getUid();
+        email = currentUser.getEmail();
 
         uidText = root.findViewById(R.id.textView4);
+        emailText = root.findViewById(R.id.textView);
         uidText.setText("User ID: "+uid);
+        emailText.setText("Email: "+email);
 
         if(currentUser != null){
             stateBtn.setText("Logout");

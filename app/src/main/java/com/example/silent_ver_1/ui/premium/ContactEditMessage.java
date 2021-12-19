@@ -1,5 +1,7 @@
 package com.example.silent_ver_1.ui.premium;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -61,19 +63,26 @@ public class ContactEditMessage extends AppCompatActivity {
     private void getContactList() {
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
         String sort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
-        Cursor cursor = getContentResolver().query(uri, null, null, null, sort);
+        Cursor cursor = getContentResolver().query(uri, null, null,
+                null, sort);
         if(cursor.getCount() > 0){
             while(cursor.moveToNext()){
+
                 int str1 = cursor.getColumnIndex(ContactsContract.Contacts._ID);
                 String id = cursor.getString(str1);
                 int str2 = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                 String name = cursor.getString(str2);
+
                 Uri uriPhone = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-                String selection = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?";
-                Cursor phoneCursor = getContentResolver().query(uriPhone, null, selection, new String[]{id}, null);
+                String selection = ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                        + " =?";
+                Log.i(TAG, "uri calendar: "+uriPhone.toString()+" , "+selection);
+                Cursor phoneCursor = getContentResolver().query(uriPhone,
+                        null, selection, new String[]{id}, null);
 
                 if(phoneCursor.moveToNext()){
-                    int str3 = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    int str3 = phoneCursor.getColumnIndex(
+                            ContactsContract.CommonDataKinds.Phone.NUMBER);
                     String number = phoneCursor.getString(str3);
                     ContactModel model = new ContactModel(name, number, currUser);
                     arrayList.add(model);
@@ -109,7 +118,7 @@ public class ContactEditMessage extends AppCompatActivity {
         if(curPosition != -1){
             arrayList.get(curPosition).setMessage(msg.getText().toString());
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
-            DatabaseReference myRef = database.getReference(currUser+"/"+arrayList.get(curPosition).getNumber());
+            DatabaseReference myRef = database.getReference(currUser+"/Contacts/"+arrayList.get(curPosition).getNumber());
             myRef.setValue(msg.getText().toString());
         }
     }
