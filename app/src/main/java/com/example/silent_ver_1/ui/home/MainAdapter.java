@@ -84,7 +84,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         holder.tvTime.setText(startTime+" - "+endTime);
         holder.tvDate.setText(startDate+" - "+endDate);
-        if(model.getDescription().length() == 0){
+        if(model.getDescription() != null){
             holder.tvDesc.setText("No description.");
         }
         else{

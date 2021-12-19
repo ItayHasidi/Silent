@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             Date dateStart = sdf.parse(startDate);
             Date dateEnd = sdf.parse(endDate);
-            long millisStart = dateStart.getTime() + 7200000; // GMT+02:00
+            long millisStart = dateStart.getTime() + 7200000;// GMT+02:00
             long millisEnd = dateEnd.getTime() + 7200000;
 
             ContentUris.appendId(uri, millisStart);

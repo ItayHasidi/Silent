@@ -17,6 +17,10 @@ public class CalendarEventModel {
      */
     boolean isMuted, toMute;
 
+    public CalendarEventModel(){
+
+    }
+
     /**
      *
      * @param start
