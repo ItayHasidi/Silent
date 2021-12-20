@@ -9,5 +9,8 @@ public class CalendarEventReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("CalendarEventReceiver", "Calendar changed (or the phone just booted) "+intent.getAction()+" , "+context.toString());
+
+
+
     }
 }
