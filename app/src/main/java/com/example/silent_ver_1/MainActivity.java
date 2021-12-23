@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.silent_ver_1.databinding.FragmentRegisterBinding;
+import com.example.silent_ver_1.ui.user.UserModel;
 import com.example.silent_ver_1.ui.user.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {// אם מצליח
+                            UserModel userModel = new UserModel(email);
                             Toast.makeText(MainActivity.this, "user created", Toast.LENGTH_LONG).show();// הודעה
                             startActivity(new Intent(MainActivity.this, NavDrawer.class));// עוברים מסך
                         }

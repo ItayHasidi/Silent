@@ -1,7 +1,10 @@
 package com.example.silent_ver_1.ui.user;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +31,35 @@ public class UserFragment extends Fragment {
     private FragmentUserBinding binding;
     private String uid, email;
     private FirebaseAuth mAuth;
-    private Button stateBtn;
-    private TextView uidText, emailText;
+    private Button stateBtn, getDetailsBtn;
+    private TextView uidText, emailText, textEmail, textPremium;
+    private UserModel user;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUserBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+         this.user = new UserModel();
+        user.getUser();
+
+        ////
+
+        getDetailsBtn = root.findViewById(R.id.getDetailsBtn);
+        textEmail = root.findViewById(R.id.textEmail);
+        textPremium = root.findViewById(R.id.textPremium);
+
+        getDetailsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                textEmail.setText(user.getEmail());
+                textPremium.setText("premium: "+user.isPremium());
+            }
+        });
+
+
+
+        ////
 
         stateBtn = root.findViewById(R.id.button_state);
         mAuth = FirebaseAuth.getInstance();

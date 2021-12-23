@@ -138,7 +138,4 @@ public class SyncNowFragment extends Fragment {
         }
         cursor.close();
     }
-
-
-
 }
