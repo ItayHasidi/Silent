@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.CalendarAssets.MutePhone;
+import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
 import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.ui.syncnow.SyncNowFragment;
 import com.example.silent_ver_1.ui.user.UserModel;
@@ -37,7 +38,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         }
 
         if(intent.getAction() == "sync") {
-            new SyncNowFragment().getEventsOfTheDaySync( System.currentTimeMillis() );
+            SyncCalendar.getEventsOfTheDay(System.currentTimeMillis(), context, new ArrayList<>());
         }
 //        else{
 //            user.setSilent(false);

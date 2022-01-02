@@ -26,14 +26,20 @@ public final class UserHolder {
     private static UserModel user;
     private static String currUser;
     private static DatabaseReference myRef;
+    private static boolean firstFlag = true;
 
     public UserHolder(){
         user = new UserModel();
         updateUser();
-
     }
 
     public static UserModel getUser() {
+        if(firstFlag){
+
+            firstFlag = false;
+//            new UserHolder();
+            Log.i(TAG, "UserHolder: "+user);
+        }
         return user;
     }
 
@@ -42,7 +48,9 @@ public final class UserHolder {
     }
 
     public void updateUser(){
+
         this.currUser = FirebaseAuth.getInstance().getUid();
+        Log.i(TAG, "in here "+ currUser);
         myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/").getReference(currUser);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,11 +64,12 @@ public final class UserHolder {
 //                UserModel.this.setEvents(newUser.getEvents());
 
 
-                for(DataSnapshot tempData: snapshot.getChildren()){
 
+                for(DataSnapshot tempData: snapshot.getChildren()){
+                    Log.i(TAG, "in here ");
                     if(tempData.getKey().equals("email")){
                         UserHolder.this.user.setEmail(tempData.getValue(String.class));
-//                        Log.i(TAG, "user model email: "+tempData.getValue(String.class) + " , "+ UserModel.this.email);
+//                        Log.i(TAG, "user model email: "+tempData.getValue(String.class) /*+ " , "+ UserModel.this.email*/);
                     }
                     else if(tempData.getKey().equals("premium")){
                         UserHolder.this.user.setPremium(tempData.getValue(Boolean.class));

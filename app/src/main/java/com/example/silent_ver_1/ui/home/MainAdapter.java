@@ -32,7 +32,7 @@ import java.util.TimeZone;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private static final String TAG = "MainAdapter";
-    Activity activity;
+    //Activity activity;
     ArrayList<CalendarEventModel> arrayList;
 
     private OnItemClickListener mListener;
@@ -46,8 +46,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         mListener = listener;
     }
 
-    public MainAdapter(Activity activity, ArrayList<CalendarEventModel> arrayList){
-        this.activity = activity;
+    public MainAdapter(/*Activity activity,*/ ArrayList<CalendarEventModel> arrayList){
+        //this.activity = activity;
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }

@@ -123,7 +123,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
         cursor.close();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(this, arrayList);
+        mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(/*this,*/ arrayList);
         recyclerView.setAdapter(mainAdapter);
         mainAdapter.setOnItemClickListener(new com.example.silent_ver_1.ui.home.MainAdapter.OnItemClickListener() {
             @Override

@@ -86,7 +86,7 @@ public class SyncCalendarActivity extends AppCompatActivity {
 
                 CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id);
                 arrayList.add(model);
-                mainAdapter = new MainAdapter(this, arrayList);
+                mainAdapter = new MainAdapter(/*this,*/ arrayList);
                 recyclerView.setAdapter(mainAdapter);
 
                 DatabaseReference myRef = database.getReference(currUser+"/Events/"+model);

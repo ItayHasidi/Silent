@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.silent_ver_1.ui.home.CalendarEventReceiver;
+import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.app.ActivityCompat;
@@ -34,12 +35,16 @@ public class NavDrawer extends AppCompatActivity {
     private TextView txtHeader;
     private String username;
     private FirebaseAuth mAuth;
+    private UserModel user;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        user = new UserModel();
+        user = UserHolder.getUser();
 
         binding = ActivityNavDrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

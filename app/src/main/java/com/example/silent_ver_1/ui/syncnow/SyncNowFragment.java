@@ -70,11 +70,10 @@ public class SyncNowFragment extends Fragment {
             public void onClick(View view) {
                 long time = System.currentTimeMillis();
 //                SyncCalendarActivity syncCalendar = new SyncCalendarActivity();
-                getEventsOfTheDaySync(time);
+                SyncCalendar.getEventsOfTheDay(time, getContext(), new ArrayList<>());
                 Log.d(TAG, "Sync Log finished");
             }
         });
-
         return root;
     }
 
@@ -83,7 +82,7 @@ public class SyncNowFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
+/*
     public void getEventsOfTheDaySync(long todayMilli) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
         currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -124,7 +123,9 @@ public class SyncNowFragment extends Fragment {
                 myRef.setValue(model);
 
                 Intent alarmIntent = new Intent(getActivity().getApplicationContext(), AlarmBroadcastReceiver.class);
-                alarmIntent.setData(Uri.parse(/*"custom://" + id+"s")*/id));
+                alarmIntent.setData(Uri.parse("custom://" + id+"s")));
+                alarmIntent.setData(Uri.parse(id));
+
                 alarmIntent.setAction("start");
                 AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
@@ -143,6 +144,6 @@ public class SyncNowFragment extends Fragment {
         }
         cursor.close();
     }
-
+*/
 
 }

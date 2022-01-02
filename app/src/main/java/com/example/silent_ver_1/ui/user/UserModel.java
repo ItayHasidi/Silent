@@ -44,8 +44,6 @@ public class UserModel {
         updateFirebase();
     }
 
-
-
     public String getEmail() {
         return email;
     }

@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
 //    public Button btn;
     private CalendarView calendarView;
 
-    private final ArrayList<CalendarEventModel> arrayList = new ArrayList<>();
+    private ArrayList<CalendarEventModel> arrayList = new ArrayList<>();
     private MainAdapter mainAdapter;
     private RecyclerView recyclerView;
     private int curPosition = -1;
@@ -63,28 +63,43 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
         user = UserHolder.getUser();
 
         calendarView = root.findViewById(R.id.calendarView);
+        recyclerView = root.findViewById(R.id.recyclerViewEvents);
+
 
         calendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
             try {
                 arrayList.clear();
-//                SyncCalendar.getEventsOfTheDay(year, month+1, day, getActivity());
                 getEventsOfTheDay(year, month+1, day);
+//                SyncCalendar.getEventsOfTheDay(year, month+1, day, getContext(), arrayList);
+                //recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            return;
         });
-
-        recyclerView = root.findViewById(R.id.recyclerViewEvents);
-
         try {
             arrayList.clear();
-//            SyncCalendar.getEventsOfTheDay(0,0,0, getActivity());
-            getEventsOfTheDay(0,0,0 );
+//            arrayList = user.getEvents();
+            getEventsOfTheDay(0,0,0);
+//            SyncCalendar.getEventsOfTheDay(0,0,0,getContext(), arrayList);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+
+//        recyclerView = root.findViewById(R.id.recyclerViewEvents);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+//        mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(/*context.,*/ arrayList);
+//        recyclerView.setAdapter(mainAdapter);
+//        mainAdapter.setOnItemClickListener(new com.example.silent_ver_1.ui.home.MainAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                arrayList.get(position).setToMute(!arrayList.get(position).isToMute());
+//                curPosition = position;
+//            }
+//        });
+//
         return root;
     }
 
@@ -168,7 +183,7 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
         cursor.close();
 //        user.setEvents(arrayList, true);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(getActivity(), arrayList);
+        mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(/*getActivity(),*/ arrayList);
         recyclerView.setAdapter(mainAdapter);
         mainAdapter.setOnItemClickListener(new com.example.silent_ver_1.ui.home.MainAdapter.OnItemClickListener() {
             @Override
