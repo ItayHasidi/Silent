@@ -10,64 +10,66 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.example.silent_ver_1.NavDrawer;
+import com.example.silent_ver_1.UserHolder;
+import com.example.silent_ver_1.ui.user.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class callReceiver extends BroadcastReceiver {
 
-    private String incomingNumber;
+    private UserModel user;
+    private String defSMS = "Can't talk, call you back later.";
+    public static String BROADCAST_ACTION = "android.permission.READ_CALL_LOG";
+    private String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
 
-    public String getIncomingNumber() {
-        return incomingNumber;
+    public String getDefSMS() {
+        return defSMS;
+    }
+
+    public void setDefSMS(String defSMS) {
+        this.defSMS = defSMS;
     }
 
     @Override
-    public void onReceive(final Context context, Intent intent) {
-//        TelephonyManager telephony = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-//        telephony.listen(new PhoneStateListener(){
-//            @Override
-//            public void onCallStateChanged(int state, String incomingNumber) {
-//                super.onCallStateChanged(state, incomingNumber);
-//                Log.i("callReceiver", "incomingNumber : "+incomingNumber);
-//            }
-//        },PhoneStateListener.LISTEN_CALL_STATE);
+    public void onReceive ( final Context context, Intent intent){
+        user = UserHolder.getUser();
 
+        if (user.isPremium() && user.isSilent() && intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+            if (!intent.getExtras().containsKey(TelephonyManager.EXTRA_INCOMING_NUMBER)) {
+                Log.i("Call receiver", "skipping intent=" + intent + ", extras=" + intent.getExtras() + " - no number was supplied");
+            } else {
+                String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                Log.i("Call receiver", "NUmber calls: " + number);
+                Toast.makeText(context, "Call from: " + number, Toast.LENGTH_LONG).show();
 
-        TelephonyManager telephony = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        telephony.listen(new PhoneStateListener(){
-            @Override
-            public void onCallStateChanged(int state, String incomingNumber) {
-                super.onCallStateChanged(state, incomingNumber);
-                System.out.println("incomingNumber : "+incomingNumber);
+                DatabaseReference myRef = database.getReference(currUser + "/Contacts/" + number);
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            String msg = snapshot.getValue().toString();
+                            Log.i("Call receiver", "database " + msg);
+                            new SendSMS().send(number, msg);
+                        }
+                        else if(number != (null)){
+                            new SendSMS().send(number, defSMS);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
             }
-        },PhoneStateListener.LISTEN_CALL_STATE);
+        }
     }
-
-//    @Override
-//    public void onReceive(final Context context, Intent intent) {
-////        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-//        String number = "aa ";
-//        number += intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-////        number += telephonyManager.getLine1Number();
-//
-//        Toast.makeText(context, "caller number: "+number+" ....... ", Toast.LENGTH_LONG).show();
-//        incomingNumber = number;
-////        TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-////        telephony.listen(new PhoneStateListener() {
-////            @Override
-////            public void onCallStateChanged(int state, String incomingNumber) {
-////                super.onCallStateChanged(state, incomingNumber);
-////                System.out.println("incomingNumber : " + incomingNumber);
-////            }
-////        }, PhoneStateListener.LISTEN_CALL_STATE);
-////        String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-////
-////        if(state.equals(TelephonyManager.EXTRA_STATE_RINGING)){
-////            String number = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-////            Toast.makeText(context, "caller number: "+number, Toast.LENGTH_LONG).show();
-////            incomingNumber = number;
-////        }
-//    }
 }

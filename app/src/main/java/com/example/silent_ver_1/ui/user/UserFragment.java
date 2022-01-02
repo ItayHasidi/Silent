@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.example.silent_ver_1.LoginActivity;
 import com.example.silent_ver_1.MainActivity;
 import com.example.silent_ver_1.NavDrawer;
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentUserBinding;
 import com.example.silent_ver_1.ui.settings.SettingsViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,46 +34,38 @@ public class UserFragment extends Fragment {
     private FragmentUserBinding binding;
     private String uid, email;
     private FirebaseAuth mAuth;
-    private Button stateBtn, getDetailsBtn;
-    private TextView uidText, emailText, textEmail, textPremium;
+    private Button stateBtn;
+    private TextView uidText, emailText;
+    private Switch premiumSwitch;
     private UserModel user;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUserBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-         this.user = new UserModel();
-        user.getUser();
 
-        ////
+        //user.getUser();
 
-        getDetailsBtn = root.findViewById(R.id.getDetailsBtn);
-        textEmail = root.findViewById(R.id.textEmail);
-        textPremium = root.findViewById(R.id.textPremium);
-
-        getDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                textEmail.setText(user.getEmail());
-                textPremium.setText("premium: "+user.isPremium());
-            }
-        });
-
-
-
-        ////
+        user = UserHolder.getUser();
 
         stateBtn = root.findViewById(R.id.button_state);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        uid = currentUser.getUid();
-        email = currentUser.getEmail();
-
         uidText = root.findViewById(R.id.textView4);
         emailText = root.findViewById(R.id.textView);
+        premiumSwitch = root.findViewById(R.id.switchPremium);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        uid = currentUser.getUid();
+        email = currentUser.getEmail();
         uidText.setText("User ID: "+uid);
         emailText.setText("Email: "+email);
+
+        if(user.isPremium()){
+            premiumSwitch.setChecked(true);
+        }
+        else{
+            premiumSwitch.setChecked(false);
+        }
 
         if(currentUser != null){
             stateBtn.setText("Logout");
@@ -86,6 +81,13 @@ public class UserFragment extends Fragment {
                     FirebaseAuth.getInstance().signOut();
                 }
                 startActivity(new Intent(getActivity(), LoginActivity.class));// עוברים מסך
+            }
+        });
+
+        premiumSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                user.setPremium(b);
             }
         });
 

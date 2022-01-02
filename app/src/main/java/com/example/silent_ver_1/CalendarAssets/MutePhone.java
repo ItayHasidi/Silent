@@ -23,12 +23,22 @@ public class MutePhone {
             if(Settings.Global.getInt(context.getContentResolver(), "zen_mode") == 0) {
                 changeInterruptionFiler(NotificationManager.INTERRUPTION_FILTER_NONE);
             }
-            else{
-                changeInterruptionFiler(NotificationManager.INTERRUPTION_FILTER_ALL);
-            }
+//            else{
+//                changeInterruptionFiler(NotificationManager.INTERRUPTION_FILTER_ALL);
+//            }
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setRegular(){
+        notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        //            if(Settings.Global.getInt(context.getContentResolver(), "zen_mode") != 0) {
+//                changeInterruptionFiler(NotificationManager.INTERRUPTION_FILTER_NONE);
+//            }
+//            else{
+        changeInterruptionFiler(NotificationManager.INTERRUPTION_FILTER_ALL);
+//            }
     }
 
     protected void changeInterruptionFiler(int interruptionFilter){

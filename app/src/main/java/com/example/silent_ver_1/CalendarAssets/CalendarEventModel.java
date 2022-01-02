@@ -11,11 +11,9 @@ public class CalendarEventModel {
     private String description, title;
     private Date start, end;
     private int id;
-    /*
-        * isMuted - whether or not the event is currently muted.
-        * toMute  - whether or not to mute the event in the first place.
-     */
-    boolean isMuted, toMute;
+
+    //toMute  - whether or not to mute the event.
+    boolean toMute;
 
     public CalendarEventModel(){
 
@@ -58,16 +56,14 @@ public class CalendarEventModel {
      * @param description
      * @param title
      * @param id
-     * @param isMuted
      * @param toMute
      */
-    public CalendarEventModel(Date start, Date end, String description, String title, String id, boolean isMuted, boolean toMute) {
+    public CalendarEventModel(Date start, Date end, String description, String title, String id, boolean toMute) {
         this.start = start;
         this.end = end;
         this.description = description;
         this.title = title;
         this.id = Integer.parseInt(id);
-        this.isMuted = isMuted;
         this.toMute = toMute;
     }
 
@@ -111,14 +107,6 @@ public class CalendarEventModel {
         this.id = id;
     }
 
-    public boolean isMuted() {
-        return isMuted;
-    }
-
-    public void setMuted(boolean muted) {
-        isMuted = muted;
-    }
-
     public boolean isToMute() {
         return toMute;
     }
@@ -133,7 +121,6 @@ public class CalendarEventModel {
                 "\nId: "+id+
                 "\nStart Date & Time: "+start+
                 "\n  End Date & Time: "+end+
-                "\nIs Muted: "+isMuted+
                 "\nTo Mute: "+toMute;
     }
 }

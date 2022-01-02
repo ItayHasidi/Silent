@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +41,7 @@ public class ContactEditMessage extends AppCompatActivity {
     private EditText msg;
     private Button saveBtn;
     private int curPosition = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,8 @@ public class ContactEditMessage extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
             DatabaseReference myRef = database.getReference(currUser+"/Contacts/"+arrayList.get(curPosition).getNumber());
             myRef.setValue(msg.getText().toString());
+
+//            UserHolder.getUser().setContacts(arrayList);
         }
     }
 

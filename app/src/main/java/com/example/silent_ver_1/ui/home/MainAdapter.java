@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.CalendarAssets.Time;
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
+import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.android.material.timepicker.TimeFormat;
 
 import java.text.DateFormat;
@@ -33,6 +36,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     ArrayList<CalendarEventModel> arrayList;
 
     private OnItemClickListener mListener;
+    private UserModel user;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -51,6 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        user = UserHolder.getUser();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calendar_event, parent, false);
         return new ViewHolder(view, mListener);
     }
@@ -65,8 +70,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             }
         });
 
-        com.example.silent_ver_1.CalendarAssets.CalendarEventModel model = arrayList.get(position);
-//        Log.i(TAG, "model: calendar "+holder.tvTitle);
+        CalendarEventModel model = arrayList.get(position);
         holder.tvTitle.setText(model.getTitle());
 
         Date start = new Date(model.getStartDate().getTime());
@@ -90,31 +94,81 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         else{
             holder.tvDesc.setText(model.getDescription());
         }
-    }
+        ArrayList<CalendarEventModel> events = user.getEvents();
+        for(CalendarEventModel event : events){
+            if(event.getId() == model.getId()){
+                holder.muteSwitch.setChecked(event.isToMute());
+            }
+        }
+//        holder.muteSwitch.setChecked(user.getEvents().get(model.getId()).isToMute());
 
+        // Here we update the toMute field of the event that the user has changed
+        // We draw all the events from the user and find the relevant one to change
+        holder.muteSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                ArrayList<CalendarEventModel> events = user.getEvents();
+                for(CalendarEventModel event : events){
+                    Log.i(TAG, "Adapter: "+event);
+                    if(event.getId() == model.getId()){
+                        event.setToMute(b);
+                        user.setMuteEvent(event, true);
+                    }
+                }
+//                user.setEvent(events, true);
+            }
+        });
+    }
 
     public void refreshView(int position){
         notifyItemChanged(position);
     }
-
 
         @Override
     public int getItemCount() {
         return arrayList.size();
     }
 
+    private boolean isToMute(String str){
+        ArrayList<CalendarEventModel> events = user.getEvents();
+        for(CalendarEventModel event : events){
+            Log.i(TAG, "compare: "+str+ " , "+event.getTitle());
+            if(event.getTitle().equals(str)){
+                return event.isToMute();
+            }
+        }
+        return false;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvDesc, tvTime, tvDate;
-        Switch muteSwitch;
+        private Switch muteSwitch;
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvDesc = itemView.findViewById(R.id.tv_desc);
             tvTime = itemView.findViewById(R.id.tv_time);
             tvDate = itemView.findViewById(R.id.tvDate);
-//            Log.i(TAG, "model: calendar init"+tvTitle+" , "+tvDesc+" , "+tvTime);
 
             muteSwitch = itemView.findViewById(R.id.toMute);
+
+
+
+//            // Here we update the toMute field of the event that the user has changed
+//            // We draw all the events from the user and find the relevant one to change
+//            muteSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                    ArrayList<CalendarEventModel> events = user.getEvents();
+//                    for(CalendarEventModel event : events){
+//                        if(event.getTitle().equals(tvTitle.getText())){
+//                            event.setToMute(b);
+//                        }
+//                    }
+//                    user.setEvents(events, true);
+//                }
+//            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

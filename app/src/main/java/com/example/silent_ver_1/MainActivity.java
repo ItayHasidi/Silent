@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             startActivity(new Intent(MainActivity.this, NavDrawer.class));
+            new UserHolder().updateUser(); // updates the user from the the firebase
         }
     }
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {// אם מצליח
                             UserModel userModel = new UserModel(email);
                             Toast.makeText(MainActivity.this, "user created", Toast.LENGTH_LONG).show();// הודעה
+                            new UserHolder().updateUser(); // updates the user from the the firebase
                             startActivity(new Intent(MainActivity.this, NavDrawer.class));// עוברים מסך
                         }
                         else {// אם לא מצליח

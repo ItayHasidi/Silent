@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {// אם מצליח
                             Toast.makeText(LoginActivity.this, "logged in", Toast.LENGTH_LONG).show();// הודעה
+                            new UserHolder().updateUser(); // updates the user from the the firebase
                             startActivity(new Intent(LoginActivity.this, NavDrawer.class));// עוברים מסך
                         }
                         else {// אם לא מצליח

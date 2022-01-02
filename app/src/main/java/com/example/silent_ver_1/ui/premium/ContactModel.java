@@ -19,6 +19,13 @@ public class ContactModel {
     private String message = "Can't talk, call you back later.";
     private String currUser;
 
+    public ContactModel(){}
+
+    public ContactModel(String number, String message){
+        this.number = number;
+        this.message = message;
+    }
+
     public ContactModel(String name, String number, String currUser/*, Context context*/){
         this.name = name;
         this.number = number;

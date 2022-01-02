@@ -12,10 +12,14 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.ui.home.MainAdapter;
+import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,11 +35,15 @@ public class SyncCalendarActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private int curPosition = -1;
     private String currUser;
+    private UserModel user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_calendar);
+        user = UserHolder.getUser();
+
+
     }
 
     public void getEventsOfTheDay(long todayMilli) {
@@ -78,23 +86,13 @@ public class SyncCalendarActivity extends AppCompatActivity {
 
                 CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id);
                 arrayList.add(model);
+                mainAdapter = new MainAdapter(this, arrayList);
+                recyclerView.setAdapter(mainAdapter);
 
                 DatabaseReference myRef = database.getReference(currUser+"/Events/"+model);
 
-                //                getDate();
-                //                Log.i(TAG,"event:"+ title + " , "+ startMin+" , "+endMin+" , "+desc+" , "+startDate+" , "+endDate);
-                //                Log.i(TAG, "event: "+model.toString());
-            }
+              }
         }
         cursor.close();
-    }
-
-
-    /**
-     * This function will handle each event's mute functions
-     * @param view the view
-     */
-    public void switchMute(View view){
-
     }
 }

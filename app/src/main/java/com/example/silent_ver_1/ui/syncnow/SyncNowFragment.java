@@ -31,10 +31,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentSyncNowBinding;
 import com.example.silent_ver_1.ui.home.AlarmBroadcastReceiver;
 import com.example.silent_ver_1.ui.home.MainAdapter;
 import com.example.silent_ver_1.ui.premium.SyncCalendarActivity;
+import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -49,6 +51,7 @@ public class SyncNowFragment extends Fragment {
     private SyncNowViewModel syncNowViewModel;
     private FragmentSyncNowBinding binding;
     private Button syncBtn;
+    private UserModel user;
 
     private long todayStartMilli, todayEndMilli;
 //    private final ArrayList<CalendarEventModel> arrayList = new ArrayList<>();
@@ -58,6 +61,8 @@ public class SyncNowFragment extends Fragment {
         syncNowViewModel = new ViewModelProvider(this).get(SyncNowViewModel.class);
         binding = FragmentSyncNowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        user = UserHolder.getUser();
 
         syncBtn = root.findViewById(R.id.syncBtn);
         syncBtn.setOnClickListener(new View.OnClickListener() {
@@ -119,16 +124,16 @@ public class SyncNowFragment extends Fragment {
                 myRef.setValue(model);
 
                 Intent alarmIntent = new Intent(getActivity().getApplicationContext(), AlarmBroadcastReceiver.class);
-                alarmIntent.setData(Uri.parse("custom://" + id+"s"));
-                alarmIntent.setAction(id+"s");
+                alarmIntent.setData(Uri.parse(/*"custom://" + id+"s")*/id));
+                alarmIntent.setAction("start");
                 AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
                 PendingIntent displayIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, alarmIntent, 0);
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, start.getTime(), displayIntent);
 
-                alarmIntent.setData(Uri.parse("custom://" + id+"e"));
-                alarmIntent.setAction(id+"e");
+                alarmIntent.setData(Uri.parse("custom://" +id+ "e"));
+                alarmIntent.setAction("end");
                 alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
                 displayIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, alarmIntent, 0);
@@ -138,4 +143,6 @@ public class SyncNowFragment extends Fragment {
         }
         cursor.close();
     }
+
+
 }

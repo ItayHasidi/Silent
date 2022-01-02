@@ -1,5 +1,6 @@
 package com.example.silent_ver_1.ui.home;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,8 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.silent_ver_1.CalendarActivity;
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
+import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
 import com.example.silent_ver_1.R;
+import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentHomeBinding;
+import com.example.silent_ver_1.ui.user.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,6 +51,7 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
     private MainAdapter mainAdapter;
     private RecyclerView recyclerView;
     private int curPosition = -1;
+    private UserModel user;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,33 +60,27 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        user = UserHolder.getUser();
+
         calendarView = root.findViewById(R.id.calendarView);
 
         calendarView.setOnDateChangeListener((calendarView, year, month, day) -> {
-//            Log.i(TAG, "Calendar: "+new Date(calendarView.getDate()).toString());
-//            Log.i(TAG, "Calendar: "+year+" , "+(month+1)+" , "+day);
-
             try {
                 arrayList.clear();
+//                SyncCalendar.getEventsOfTheDay(year, month+1, day, getActivity());
                 getEventsOfTheDay(year, month+1, day);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
         });
-//        Log.i(TAG, "Calendar: "+new Date(calendarView.getDate()).toString());
 
         recyclerView = root.findViewById(R.id.recyclerViewEvents);
-//        recyclerView.invalidate();
-
-
-
-//        checkPermission();
-//        getCalendarNames();
 
         try {
             arrayList.clear();
-            getEventsOfTheDay(0,0,0);
+//            SyncCalendar.getEventsOfTheDay(0,0,0, getActivity());
+            getEventsOfTheDay(0,0,0 );
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -87,30 +90,12 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
 
     @Override
     public void onDestroyView() {
-//        arrayList.clear();
-//        mainAdapter.notifyDataSetChanged();
         super.onDestroyView();
         binding = null;
     }
 
-//    @Override
-//    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-//
-//        calendarView.setHeaderTextAppearance(R.style.AppTheme);
-//
-//        List<Event> event =  map.get(date);
-//        if(event!=null && event.size()>0) {
-//            adapter.addItems(event);
-//        }else {
-//            adapter.clear();
-//        }
-//    }
-
 
     public void getEventsOfTheDay(int year, int month, int day) throws ParseException {
-
-//        mainAdapter.notifyItemRangeChanged(0, mainAdapter.getItemCount());
-
         View root = binding.getRoot();
         Uri.Builder uri = CalendarContract.Instances.CONTENT_URI.buildUpon();
         if(year == 0){
@@ -141,13 +126,11 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
             ContentUris.appendId(uri, millisStart);
             ContentUris.appendId(uri, millisEnd);
 
-//            Log.i(TAG, "Calendar: "+millisStart+ " , "+millisEnd);
         }
 
         Uri eventsUri = uri.build();
         Cursor cursor = null;
-//        Log.i(TAG,"event:"+ uri.toString());
-        // gets all the events of the day
+
         cursor = getActivity().getContentResolver().query(eventsUri, null, null, null, CalendarContract.Instances.DTSTART + " ASC");
         // iterates through all th events and prints them
         if(cursor.getCount() > 0){
@@ -165,16 +148,25 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
                 String endDate = cursor.getString(endDateCur);
                 Date end = new Date(Long.parseLong(endDate));
 
-//                Log.i(TAG,"event:"+ title + " , "+ start+" , "+end);
+                boolean toMute = false;
+                for(CalendarEventModel ev : user.getEvents()) {
+                    if(ev.getId() == Integer.parseInt(id)){
+                        if (ev != null) {
+                            toMute = ev.isToMute();
+                        }
+                    }
+                }
 
-                CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id);
+                CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id, toMute);
                 arrayList.add(model);
-//                getDate();
-//                Log.i(TAG,"event:"+ title + " , "+ startMin+" , "+endMin+" , "+desc+" , "+startDate+" , "+endDate);
-//                Log.i(TAG, "event: "+model.toString());
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
+                String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference myRef = database.getReference(currUser+"/Events/"+model);
+
             }
         }
         cursor.close();
+//        user.setEvents(arrayList, true);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         mainAdapter = new com.example.silent_ver_1.ui.home.MainAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(mainAdapter);
@@ -185,6 +177,7 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
                 curPosition = position;
             }
         });
+
     }
 
 
@@ -202,15 +195,4 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
         // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         return getStartOfDayInMillis() + (24 * 60 * 60 * 1000 - 1);
     }
-
-    /**
-     * This function will handle each event's mute functions
-     * @param view the view
-     */
-    public void switchMute(View view){
-
-    }
-
-
-
 }
