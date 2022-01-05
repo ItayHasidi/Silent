@@ -163,6 +163,11 @@ public class HomeFragment extends Fragment /*implements OnDateSelectedListener*/
                 String endDate = cursor.getString(endDateCur);
                 Date end = new Date(Long.parseLong(endDate));
 
+                // This is not working very well
+//                if(end.getTime() < System.currentTimeMillis()){
+//                    continue;
+//                }
+
                 boolean toMute = false;
                 for(CalendarEventModel ev : user.getEvents()) {
                     if(ev.getId() == Integer.parseInt(id)){

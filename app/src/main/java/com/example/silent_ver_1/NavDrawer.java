@@ -1,15 +1,20 @@
 package com.example.silent_ver_1;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.silent_ver_1.ui.home.AlarmBroadcastReceiver;
 import com.example.silent_ver_1.ui.home.CalendarEventReceiver;
 import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.android.material.navigation.NavigationView;
@@ -26,6 +31,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.silent_ver_1.databinding.ActivityNavDrawerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class NavDrawer extends AppCompatActivity {
 
@@ -45,6 +53,23 @@ public class NavDrawer extends AppCompatActivity {
 
         user = new UserModel();
         user = UserHolder.getUser();
+
+        if(!user.isHasSyncAlarm()){
+            Toast.makeText(this, "Created", Toast.LENGTH_LONG).show();
+            user.setHasSyncAlarm(true);
+            Intent alarmIntent = new Intent(getApplicationContext(), AlarmBroadcastReceiver.class);
+
+            alarmIntent.setAction("sync");
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
+            PendingIntent displayIntent = PendingIntent.getBroadcast(getApplicationContext().getApplicationContext(), 0, alarmIntent, 0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR, 22);
+            calendar.set(Calendar.MINUTE, 33);
+            calendar.set(Calendar.SECOND, 0);
+            long t = calendar.getTimeInMillis();
+            alarmManager.set(AlarmManager.RTC_WAKEUP, t, displayIntent);
+        }
 
         binding = ActivityNavDrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

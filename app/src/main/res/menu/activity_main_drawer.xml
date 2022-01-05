@@ -16,14 +16,7 @@
             android:id="@+id/nav_premium"
             android:icon="@drawable/ic_premium"
             android:title="@string/premium" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/settings" />
-        <item
-            android:id="@+id/nav_sync_options"
-            android:icon="@drawable/ic_sync_options"
-            android:title="@string/sync_options" />
+        
         <item
             android:id="@+id/nav_user"
             android:icon="@drawable/ic_baseline_person_24"

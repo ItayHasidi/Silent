@@ -46,7 +46,7 @@ public class UserFragment extends Fragment {
         //user.getUser();
 
         user = UserHolder.getUser();
-
+        Log.i(TAG,"try again - ");
         stateBtn = root.findViewById(R.id.button_state);
         uidText = root.findViewById(R.id.textView4);
         emailText = root.findViewById(R.id.textView);
@@ -62,9 +62,11 @@ public class UserFragment extends Fragment {
 
         if(user.isPremium()){
             premiumSwitch.setChecked(true);
+            Log.i(TAG,"try again - " + user.isPremium());
         }
         else{
             premiumSwitch.setChecked(false);
+            Log.i(TAG,"try again - " + user.isPremium());
         }
 
         if(currentUser != null){

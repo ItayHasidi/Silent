@@ -42,26 +42,31 @@
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_settings.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_sync_now.xml" value="0.3828125" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/drawable/ic_sync_options.xml" value="0.3828125" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_contact_edit_message.xml" value="0.36666666666666664" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_filter_edit_message.xml" value="0.36666666666666664" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_main.xml" value="0.34601449275362317" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/activity_nav_drawer.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/app_bar_nav_drawer.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/content_nav_drawer.xml" value="0.34601449275362317" />
-        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_about.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_about.xml" value="0.5" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_home.xml" value="0.34601449275362317" />
-        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_premium.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_premium.xml" value="0.5" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_settings.xml" value="0.33152173913043476" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_slideshow.xml" value="0.3365036231884058" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_sync_now.xml" value="0.32653985507246375" />
-        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_sync_options.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_sync_options.xml" value="0.5" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_syncnow.xml" value="0.33152173913043476" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_syncoptions.xml" value="0.32653985507246375" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/fragment_user.xml" value="0.2421875" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/item_contact.xml" value="0.36666666666666664" />
+        <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/item_filter.xml" value="0.33" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/layout/nav_header_nav_drawer.xml" value="0.32653985507246375" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/repo/Silent_ver_1/app/src/main/res/menu/nav_drawer.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

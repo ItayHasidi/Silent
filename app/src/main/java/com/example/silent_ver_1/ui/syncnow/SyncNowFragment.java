@@ -71,7 +71,10 @@ public class SyncNowFragment extends Fragment {
                 long time = System.currentTimeMillis();
 //                SyncCalendarActivity syncCalendar = new SyncCalendarActivity();
                 SyncCalendar.getEventsOfTheDay(time, getContext(), new ArrayList<>());
+                SyncCalendar.deletePastEvents(time);
+
                 Log.d(TAG, "Sync Log finished");
+
             }
         });
         return root;

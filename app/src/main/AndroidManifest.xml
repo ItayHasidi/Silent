@@ -73,6 +73,11 @@
             android:label="@string/title_contact_edit_message"
             android:theme="@style/Theme.Silent_ver_1.NoActionBar" />
         <activity
+            android:name=".ui.premium.FilterEditMessage"
+            android:exported="false"
+            android:label="Edit filters"
+            android:theme="@style/Theme.Silent_ver_1.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

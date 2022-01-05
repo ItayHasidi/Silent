@@ -2,16 +2,13 @@ package com.example.silent_ver_1;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
-import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
-import com.example.silent_ver_1.ui.home.HomeFragment;
 import com.example.silent_ver_1.ui.premium.ContactModel;
+import com.example.silent_ver_1.ui.premium.FiltertModel;
 import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -55,14 +52,6 @@ public final class UserHolder {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                UserModel newUser = snapshot.getValue(UserModel.class);
-//
-//                UserModel.this.setSilent(newUser.isSilent());
-//                UserModel.this.setPremium(newUser.isPremium());
-//                UserModel.this.setEmail(newUser.getEmail());
-//                UserModel.this.setContacts(newUser.getContacts());
-//                UserModel.this.setEvents(newUser.getEvents());
-
 
 
                 for(DataSnapshot tempData: snapshot.getChildren()){
@@ -105,6 +94,16 @@ public final class UserHolder {
 //                        UserModel.this.events = tempData.getValue(ArrayList.class);
 //                        Log.i(TAG, "UserModel: events: "+tempData.getValue(ArrayList.class) + " , "+ UserModel.this.events);
                     }
+                    else if(tempData.getKey().equals("Filters")){
+                        ArrayList<FiltertModel> tempArr = new ArrayList<>();
+                        for(DataSnapshot tempFilter : tempData.getChildren()){
+                            tempArr.add(tempFilter.getValue(FiltertModel.class));
+                        }
+                        UserHolder.this.user.setFilters(tempArr);
+                    }
+                    else if(tempData.getKey().equals("HasSyncAlarm")){
+                        UserHolder.this.user.setHasSyncAlarm(tempData.getValue(Boolean.class));
+                    }
 
                 }
                 //Log.i(TAG, "UserModel: "+UserModel.this);
@@ -120,4 +119,26 @@ public final class UserHolder {
 //        Log.i(TAG, "user model premium1: "+this.isPremium);
         //while(isWait){}
     }
+
+//    public  boolean checkFilterExist(FiltertModel filtertModel){
+//        boolean ans = false;
+//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
+//        DatabaseReference myRef = database.getReference(currUser);
+//        Query query = myRef.child("/adc").orderByChild("filter").equalTo(filtertModel.getFilter());
+//
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+//                    ans = false;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e(TAG, "onCancelled", databaseError.toException());
+//            }
+//        });
+//        return ans;
+//    }
 }

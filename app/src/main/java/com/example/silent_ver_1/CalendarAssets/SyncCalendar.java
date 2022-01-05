@@ -3,8 +3,11 @@ package com.example.silent_ver_1.CalendarAssets;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.nfc.Tag;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,12 +28,19 @@ import com.example.silent_ver_1.NavDrawer;
 import com.example.silent_ver_1.R;
 import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentHomeBinding;
+import com.example.silent_ver_1.ui.home.AlarmBroadcastReceiver;
 import com.example.silent_ver_1.ui.home.HomeFragment;
 import com.example.silent_ver_1.ui.home.MainAdapter;
+import com.example.silent_ver_1.ui.premium.FiltertModel;
 import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,9 +64,9 @@ public final class SyncCalendar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "User: "+user);
+        /* Getting user info from the database */
         user = UserHolder.getUser();
         Log.i(TAG, "User: "+user);
-//        setContentView(R.layout.activity_sync_calendar);
     }
 
     private static void getEventsOfTheDay(Uri.Builder uri, Context context, ArrayList<CalendarEventModel> arrayList){
@@ -81,7 +92,9 @@ public final class SyncCalendar extends AppCompatActivity {
                 String endDate = cursor.getString(endDateCur);
                 Date end = new Date(Long.parseLong(endDate));
 
+
                 boolean toMute = false;
+
 //                for(CalendarEventModel ev : user.getEvents()) {
 //                    if(ev.getId() == Integer.parseInt(id)){
 //                        if (ev != null) {
@@ -89,9 +102,34 @@ public final class SyncCalendar extends AppCompatActivity {
 //                        }
 //                    }
 //                }
+                if(user.isPremium()){
+                    for(FiltertModel f : UserHolder.getUser().getFilters()){
+                        if(title.contains(f.getFilter())){
+                            toMute = true;
+                        }
+                    }
+                }
 
                 CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id, toMute);
                 arrayList.add(model);
+                Intent alarmIntent = new Intent(context, AlarmBroadcastReceiver.class);
+                alarmIntent.setData(Uri.parse("custom://" + id+"s"));
+                alarmIntent.setData(Uri.parse(id));
+
+                alarmIntent.setAction("start");
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+                PendingIntent displayIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, start.getTime(), displayIntent);
+
+                alarmIntent.setData(Uri.parse("custom://" +id+ "e"));
+                alarmIntent.setAction("end");
+                alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+                displayIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, end.getTime(), displayIntent);
 //                FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
 //                String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //                DatabaseReference myRef = database.getReference(currUser+"/Events/"+model.getId());
@@ -144,6 +182,7 @@ public final class SyncCalendar extends AppCompatActivity {
             long millisStart = dateStart.getTime() + 7200000;// GMT+02:00
             long millisEnd = dateEnd.getTime() + 7200000;
 
+
             ContentUris.appendId(uri, millisStart);
             ContentUris.appendId(uri, millisEnd);
 
@@ -164,6 +203,51 @@ public final class SyncCalendar extends AppCompatActivity {
         // Add one day's time to the beginning of the day.
         // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         return getStartOfDayInMillis() + (24 * 60 * 60 * 1000 - 1);
+    }
+
+    public static void deletePastEvents(long currTime){
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
+        if(currUser == null){
+            currUser =FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+        DatabaseReference myRef = database.getReference(currUser);
+        Query query = myRef.child("/Events");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    if(snap.exists()){
+//                        Log.i(TAG,"try again snap = " + snap.getKey());
+                        CalendarEventModel c = snap.getValue(CalendarEventModel.class);
+                        Log.i(TAG,"try again c.title = " + c.getTitle());
+//                        Log.i(TAG,"try again c.endDate = " + c.getEndDate());
+                        if(c.getEndDate().getTime() < currTime){
+                            Log.i(TAG, "Comment -  Delete past event - " + c.getTitle());
+                            snap.getRef().removeValue();
+                        }
+                        boolean found = false;
+                        for(CalendarEventModel calendarEventModel : user.getEvents()){
+                            if(c.getId() == calendarEventModel.getId()){
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(!found){
+                            Log.i(TAG, "Comment -  Delete not exist - " + c.getTitle());
+                            snap.getRef().removeValue();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 /*

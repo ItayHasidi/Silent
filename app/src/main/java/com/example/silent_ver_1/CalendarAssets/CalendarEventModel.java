@@ -80,7 +80,7 @@ public class CalendarEventModel {
     }
 
     public void setEndDate(java.util.Date endDate) {
-        this.end = end;
+        this.end = endDate;
     }
 
     public String getDescription() {
