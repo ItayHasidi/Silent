@@ -30,7 +30,7 @@ public class FilterEditMessage extends AppCompatActivity {
     private Button saveBtn;
     private Button delBtn;
     private int curPosition = -1;
-    public static ArrayList<FiltertModel> arrayList = new ArrayList<>();
+    public static ArrayList<FilterModel> arrayList = new ArrayList<>();
     private FilterAdapter adapter;
     public static final String TAG = "ContentValues";
 
@@ -63,7 +63,7 @@ public class FilterEditMessage extends AppCompatActivity {
                 arrayList.clear();
                 for(DataSnapshot d : snapshot.getChildren()){
                     if(d.exists()){
-                        FiltertModel t = d.getValue(FiltertModel.class);
+                        FilterModel t = d.getValue(FilterModel.class);
                         FilterEditMessage.arrayList.add(t);
                     }
                 }
@@ -114,13 +114,13 @@ public class FilterEditMessage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // For each filter in the Database of the current user we check if the filter is exist
                 for(DataSnapshot temp: snapshot.getChildren()){
-                    FiltertModel f = temp.getValue(FiltertModel.class);
+                    FilterModel f = temp.getValue(FilterModel.class);
                     if(f.getFilter().equals(s)){
                         return;
                     }
                 }
                 // If the filter is not exist then create a new FilterModel and save it to the database
-                FiltertModel temp = new FiltertModel(s);
+                FilterModel temp = new FilterModel(s);
                 myRef.setValue(temp);
                 ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -162,7 +162,7 @@ public class FilterEditMessage extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference(currUser);
         DatabaseReference myRef2 = database.getReference(currUser).child("Events");
-        for(FiltertModel f : arrayList){
+        for(FilterModel f : arrayList){
             if(f.getFilter().equals(s)){
                 // Removing the filter from the arraylist
                 arrayList.remove(f);

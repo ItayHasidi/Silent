@@ -39,35 +39,35 @@ public class callReceiver extends BroadcastReceiver {
         this.defSMS = defSMS;
     }
 
+    /**
+     * Catches phone calls when the phone is in Silent mode and sends the designated SMS that was defined by the user.
+     * If the user has not defined one for the calling contact, a default message will be sent.
+     * @param context
+     * @param intent
+     */
     @Override
     public void onReceive ( final Context context, Intent intent){
         user = UserHolder.getUser();
 
         if (user.isPremium() && user.isSilent() && intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_RINGING)) {
             if (!intent.getExtras().containsKey(TelephonyManager.EXTRA_INCOMING_NUMBER)) {
-                Log.i("Call receiver", "skipping intent=" + intent + ", extras=" + intent.getExtras() + " - no number was supplied");
             } else {
                 String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-                Log.i("Call receiver", "NUmber calls: " + number);
                 Toast.makeText(context, "Call from: " + number, Toast.LENGTH_LONG).show();
-
                 DatabaseReference myRef = database.getReference(currUser + "/Contacts/" + number);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
                             String msg = snapshot.getValue().toString();
-                            Log.i("Call receiver", "database " + msg);
                             new SendSMS().send(number, msg);
                         }
                         else if(number != (null)){
                             new SendSMS().send(number, defSMS);
                         }
                     }
-
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
         }

@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.ui.premium.ContactModel;
-import com.example.silent_ver_1.ui.premium.FiltertModel;
+import com.example.silent_ver_1.ui.premium.FilterModel;
 import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -83,9 +83,9 @@ public final class UserHolder {
                         UserHolder.this.user.setEvents(tempArr, false);
                     }
                     else if(tempData.getKey().equals("Filters")){
-                        ArrayList<FiltertModel> tempArr = new ArrayList<>();
+                        ArrayList<FilterModel> tempArr = new ArrayList<>();
                         for(DataSnapshot tempFilter : tempData.getChildren()){
-                            tempArr.add(tempFilter.getValue(FiltertModel.class));
+                            tempArr.add(tempFilter.getValue(FilterModel.class));
                         }
                         UserHolder.this.user.setFilters(tempArr);
                     }

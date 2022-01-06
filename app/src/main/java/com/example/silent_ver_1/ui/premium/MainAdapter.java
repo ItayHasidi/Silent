@@ -46,16 +46,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return new ViewHolder(view, mListener);
     }
 
+    /**
+     * Gets the contacts and sets them into recycler view objects.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         com.example.silent_ver_1.ui.premium.ContactModel model = arrayList.get(position);
-        Log.i(TAG, "model: contact "+holder.tvName);
         holder.tvName.setText(model.getName());
         holder.tvNumber.setText(model.getNumber());
     }
-    public void onClickContact(View view){
-//        Toast.makeText(view.getContext(), "clicked on contact: "/*+tvName+" , "+tvNumber*/, Toast.LENGTH_LONG).show();
-    }
+
 
     @Override
     public int getItemCount() {

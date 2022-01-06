@@ -2,7 +2,6 @@ package com.example.silent_ver_1.CalendarAssets;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -10,31 +9,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
-import android.view.View;
 import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.silent_ver_1.MainActivity;
-import com.example.silent_ver_1.NavDrawer;
-import com.example.silent_ver_1.R;
 import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentHomeBinding;
 import com.example.silent_ver_1.ui.home.AlarmBroadcastReceiver;
-import com.example.silent_ver_1.ui.home.HomeFragment;
 import com.example.silent_ver_1.ui.home.MainAdapter;
-import com.example.silent_ver_1.ui.premium.FiltertModel;
+import com.example.silent_ver_1.ui.premium.FilterModel;
 import com.example.silent_ver_1.ui.user.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -99,7 +89,7 @@ public final class SyncCalendar extends AppCompatActivity {
 
                 boolean toMute = false;
                 if(user.isPremium()){
-                    for(FiltertModel f : UserHolder.getUser().getFilters()){
+                    for(FilterModel f : UserHolder.getUser().getFilters()){
                         if(title.contains(f.getFilter())){
                             toMute = true;
                         }
