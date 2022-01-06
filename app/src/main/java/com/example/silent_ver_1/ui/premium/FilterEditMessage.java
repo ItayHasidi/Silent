@@ -43,7 +43,7 @@ public class FilterEditMessage extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewFilter);
         saveBtn = findViewById(R.id.saveBtnFilter);
         delBtn = findViewById(R.id.deleteBtn);
-        // Get the filterList from the database
+        // Get the filterList from the database and adding it to the arraylist
         getFilterList();
 
     }
