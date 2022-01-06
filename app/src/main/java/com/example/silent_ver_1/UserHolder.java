@@ -101,9 +101,10 @@ public final class UserHolder {
                         }
                         UserHolder.this.user.setFilters(tempArr);
                     }
-                    else if(tempData.getKey().equals("HasSyncAlarm")){
-                        UserHolder.this.user.setHasSyncAlarm(tempData.getValue(Boolean.class));
-                    }
+//                    else if(tempData.getKey().equals("HasSyncAlarm")){
+//                        Log.i(TAG, "try again checking alarm"+ tempData.getValue(Boolean.class));
+//                        UserHolder.this.user.setHasSyncAlarm(tempData.getValue(Boolean.class));
+//                    }
 
                 }
                 //Log.i(TAG, "UserModel: "+UserModel.this);

@@ -5,9 +5,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,32 +46,46 @@ public class NavDrawer extends AppCompatActivity {
     private String username;
     private FirebaseAuth mAuth;
     private UserModel user;
+    private static final String TAG = "NavDrawer";
 
+    public static final String PREF_NAME = "HasSynced";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        user = new UserModel();
         user = UserHolder.getUser();
 
-        if(!user.isHasSyncAlarm()){
-            Toast.makeText(this, "Created", Toast.LENGTH_LONG).show();
-            user.setHasSyncAlarm(true);
-            Intent alarmIntent = new Intent(getApplicationContext(), AlarmBroadcastReceiver.class);
+        SharedPreferences pref = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        boolean syncedAlarm = pref.getBoolean("HasSyncAlarm", false);
 
-            alarmIntent.setAction("sync");
-            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+        if(!syncedAlarm){
+//            Toast.makeText(this, "Created", Toast.LENGTH_LONG).show();
+//            user.setHasSyncAlarm(true);
+            Log.i(TAG, "try again Enjoy from auto sync");
+            SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
+            editor.putBoolean("HasSyncAlarm", true);
+            editor.apply();
 
-            PendingIntent displayIntent = PendingIntent.getBroadcast(getApplicationContext().getApplicationContext(), 0, alarmIntent, 0);
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR, 22);
-            calendar.set(Calendar.MINUTE, 33);
-            calendar.set(Calendar.SECOND, 0);
-            long t = calendar.getTimeInMillis();
-            alarmManager.set(AlarmManager.RTC_WAKEUP, t, displayIntent);
+            SyncAlarm.createSyncAlarm(getApplicationContext());
+//            SyncAlarm.checkAlarms(getApplicationContext());
+//            Intent alarmIntent = new Intent(getApplicationContext(), AlarmBroadcastReceiver.class);
+//
+//            alarmIntent.setAction("sync");
+//            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+//
+//            PendingIntent displayIntent = PendingIntent.getBroadcast(getApplicationContext().getApplicationContext(), 0, alarmIntent, 0);
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.set(Calendar.HOUR, 13);
+//            calendar.set(Calendar.MINUTE, 0);
+//            calendar.set(Calendar.SECOND, 0);
+//            long t = calendar.getTimeInMillis();
+//            alarmManager.set(AlarmManager.RTC_WAKEUP, t, displayIntent);
         }
+
+//        Toast.makeText(this, "Created"+user.isHasSyncAlarm(), Toast.LENGTH_LONG).show();
+//        user = UserHolder.getUser();
 
         binding = ActivityNavDrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -129,6 +145,9 @@ public class NavDrawer extends AppCompatActivity {
         filter.addDataScheme("content");
         filter.addDataAuthority("com.android.calendar", null);
         registerReceiver(new CalendarEventReceiver(), filter);
+
+//        Log.i(TAG, "try again recieved syncalarmstatus - " + user.isHasSyncAlarm());
+
     }
 
 

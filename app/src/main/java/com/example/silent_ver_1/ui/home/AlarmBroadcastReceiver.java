@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.CalendarAssets.MutePhone;
 import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
+import com.example.silent_ver_1.SyncAlarm;
 import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.ui.syncnow.SyncNowFragment;
 import com.example.silent_ver_1.ui.user.UserModel;
@@ -39,6 +41,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
         if(intent.getAction() == "sync") {
             SyncCalendar.getEventsOfTheDay(System.currentTimeMillis(), context, new ArrayList<>());
+            Log.i(TAG,"try again synced - ");
+//            SyncAlarm.createSyncAlarm(context);
         }
 //        else{
 //            user.setSilent(false);

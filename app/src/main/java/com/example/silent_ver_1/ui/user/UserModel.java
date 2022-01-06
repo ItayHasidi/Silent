@@ -29,7 +29,7 @@ public class UserModel {
     private ArrayList<CalendarEventModel> events;
     private DatabaseReference myRef;
     private ArrayList<FiltertModel> filters;
-    private boolean hasSyncAlarm;
+//    private boolean hasSyncAlarm;
 
     private boolean isWait = true;
 
@@ -47,6 +47,7 @@ public class UserModel {
         this.contacts = new ArrayList<>();
         this.events = new ArrayList<>();
         this.filters = new ArrayList<>();
+//        this.hasSyncAlarm = false;
         updateFirebase();
     }
 
@@ -193,8 +194,8 @@ public class UserModel {
         return this.filters;
     }
 
-    public boolean isHasSyncAlarm() {
-        return hasSyncAlarm;
-    }
-    public void setHasSyncAlarm(boolean hasSyncAlarm) { hasSyncAlarm = hasSyncAlarm; updateFirebase("HasSyncAlarm", hasSyncAlarm);}
+//    public boolean isHasSyncAlarm() {
+//        return hasSyncAlarm;
+//    }
+//    public void setHasSyncAlarm(boolean hasSyncAlarm) { this.hasSyncAlarm = hasSyncAlarm; updateFirebase("HasSyncAlarm", hasSyncAlarm);}
 }
