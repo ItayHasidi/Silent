@@ -23,10 +23,16 @@ public class PremiumFragment extends Fragment {
 
     private PremiumViewModel premiumViewModel;
     private FragmentPremiumBinding binding;
-    private Button defMsgBtn, goToGetCalls,goToFilters;
+    private Button defMsgBtn, goToFilters;
     private UserModel user;
 
-
+    /**
+     * In this page the premium user can either define message that will be sent automatically to a caller during a Silent event, or define filters that will filter out and silent specific events.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         premiumViewModel = new ViewModelProvider(this).get(PremiumViewModel.class);
         binding = FragmentPremiumBinding.inflate(inflater, container, false);

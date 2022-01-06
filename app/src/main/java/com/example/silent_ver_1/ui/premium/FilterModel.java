@@ -8,16 +8,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class FiltertModel {
+/**
+ * Holds data for a filter.
+ * A filter is used to filter out only events the user wants to set to Silent.
+ */
+public class FilterModel {
 
     private String filterField;
 
-    public FiltertModel(){}
+    public FilterModel(){}
 
-    public FiltertModel(String t){
+    public FilterModel(String t){
         this.filterField =t;
     }
-
 
     public String getFilter(){
         return this.filterField;
@@ -26,8 +29,4 @@ public class FiltertModel {
     public void setFilter(String filter){
         this.filterField = filter;
     }
-
-
-
-
 }

@@ -1,15 +1,10 @@
 package com.example.silent_ver_1.ui.user;
 
-import static android.content.ContentValues.TAG;
-
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.example.silent_ver_1.CalendarAssets.CalendarEventModel;
 import com.example.silent_ver_1.ui.premium.ContactModel;
-import com.example.silent_ver_1.ui.premium.FiltertModel;
+import com.example.silent_ver_1.ui.premium.FilterModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,8 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Filter;
 
 public class UserModel {
     private String email;
@@ -28,7 +21,7 @@ public class UserModel {
     private ArrayList<ContactModel> contacts;
     private ArrayList<CalendarEventModel> events;
     private DatabaseReference myRef;
-    private ArrayList<FiltertModel> filters;
+    private ArrayList<FilterModel> filters;
 
 
 
@@ -189,7 +182,7 @@ public class UserModel {
      * Set a list of FilterModel
      * @param tempArr
      */
-    public void setFilters(ArrayList<FiltertModel> tempArr) {
+    public void setFilters(ArrayList<FilterModel> tempArr) {
         this.filters = new ArrayList<>(tempArr);
     }
 
@@ -197,7 +190,7 @@ public class UserModel {
      * Get a list of filters of the current user
      * @return
      */
-    public ArrayList<FiltertModel> getFilters(){
+    public ArrayList<FilterModel> getFilters(){
         return this.filters;
     }
 }

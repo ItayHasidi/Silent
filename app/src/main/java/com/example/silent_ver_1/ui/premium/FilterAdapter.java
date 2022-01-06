@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
     Activity activity;
-    ArrayList<FiltertModel>arrayList;
+    ArrayList<FilterModel>arrayList;
 
     private OnItemClickListener mListener;
 
@@ -27,7 +27,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
         mListener = listener;
     }
 
-    public FilterAdapter(Activity activity, ArrayList<FiltertModel> arrayList){
+    public FilterAdapter(Activity activity, ArrayList<FilterModel> arrayList){
         this.activity = activity;
         this.arrayList = arrayList;
         notifyDataSetChanged();
@@ -42,7 +42,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FiltertModel model = arrayList.get(position);
+        FilterModel model = arrayList.get(position);
         holder.filterText.setText(model.getFilter());
     }
 
