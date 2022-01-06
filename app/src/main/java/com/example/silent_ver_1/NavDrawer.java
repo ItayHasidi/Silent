@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.silent_ver_1.CalendarAssets.SyncCalendar;
 import com.example.silent_ver_1.ui.home.AlarmBroadcastReceiver;
 import com.example.silent_ver_1.ui.home.CalendarEventReceiver;
 import com.example.silent_ver_1.ui.user.UserModel;
@@ -34,6 +35,7 @@ import com.example.silent_ver_1.databinding.ActivityNavDrawerBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -46,6 +48,7 @@ public class NavDrawer extends AppCompatActivity {
     private String username;
     private FirebaseAuth mAuth;
     private UserModel user;
+    private Button syncBtn;
     private static final String TAG = "NavDrawer";
 
     public static final String PREF_NAME = "HasSynced";
@@ -97,7 +100,7 @@ public class NavDrawer extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_settings, R.id.nav_sync_now, R.id.nav_sync_options
+                R.id.nav_home, R.id.nav_settings, R.id.nav_sync_options
         ,R.id.nav_premium, R.id.nav_user, R.id.nav_about)
                 .setOpenableLayout(drawer)
                 .build();
@@ -110,6 +113,7 @@ public class NavDrawer extends AppCompatActivity {
 
         headerBtn = header.findViewById(R.id.userBtnHeader);
         txtHeader = header.findViewById(R.id.userTxtHeader);
+        syncBtn = header.findViewById(R.id.syncBtnNavDrawer);
 
 
 
@@ -129,6 +133,20 @@ public class NavDrawer extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                 }
                 startActivity(new Intent(NavDrawer.this, LoginActivity.class));// עוברים מסך
+            }
+        });
+
+
+        syncBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long time = System.currentTimeMillis();
+//                SyncCalendarActivity syncCalendar = new SyncCalendarActivity();
+                SyncCalendar.getEventsOfTheDay(time, getApplicationContext(), new ArrayList<>());
+                SyncCalendar.deletePastEvents(time);
+
+                Log.d(TAG, "Sync Log finished");
+
             }
         });
 

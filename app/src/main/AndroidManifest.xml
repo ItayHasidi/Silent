@@ -36,9 +36,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.premium.GetCalls"
-            android:exported="false" />
 
         <receiver
             android:name=".ui.premium.callReceiver"

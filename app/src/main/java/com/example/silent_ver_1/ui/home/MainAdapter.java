@@ -32,9 +32,7 @@ import java.util.TimeZone;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private static final String TAG = "MainAdapter";
-    //Activity activity;
     ArrayList<CalendarEventModel> arrayList;
-
     private OnItemClickListener mListener;
     private UserModel user;
 
@@ -46,8 +44,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         mListener = listener;
     }
 
-    public MainAdapter(/*Activity activity,*/ ArrayList<CalendarEventModel> arrayList){
-        //this.activity = activity;
+    public MainAdapter(ArrayList<CalendarEventModel> arrayList){
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
@@ -60,6 +57,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return new ViewHolder(view, mListener);
     }
 
+    /**
+     * Gets the events and sets them into recycler view objects.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
@@ -84,8 +86,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         String endDate = dateFormat.format(end);
         String endTime = timeFormat.format(end);
 
-        Log.i(TAG,  "date:: "+startDate+" , "+endDate);
-
         holder.tvTime.setText(startTime+" - "+endTime);
         holder.tvDate.setText(startDate+" - "+endDate);
         if(model.getDescription() != null){
@@ -100,7 +100,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 holder.muteSwitch.setChecked(event.isToMute());
             }
         }
-//        holder.muteSwitch.setChecked(user.getEvents().get(model.getId()).isToMute());
 
         // Here we update the toMute field of the event that the user has changed
         // We draw all the events from the user and find the relevant one to change
@@ -109,13 +108,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 ArrayList<CalendarEventModel> events = user.getEvents();
                 for(CalendarEventModel event : events){
-                    Log.i(TAG, "Adapter: "+event);
                     if(event.getId() == model.getId()){
                         event.setToMute(b);
                         user.setMuteEvent(event, true);
                     }
                 }
-//                user.setEvent(events, true);
             }
         });
     }
@@ -124,7 +121,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         notifyItemChanged(position);
     }
 
-        @Override
+    @Override
     public int getItemCount() {
         return arrayList.size();
     }
@@ -132,7 +129,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private boolean isToMute(String str){
         ArrayList<CalendarEventModel> events = user.getEvents();
         for(CalendarEventModel event : events){
-            Log.i(TAG, "compare: "+str+ " , "+event.getTitle());
             if(event.getTitle().equals(str)){
                 return event.isToMute();
             }
@@ -140,6 +136,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         return false;
     }
 
+    /**
+     * A class that catches changes made to the toMute switch for each event.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvDesc, tvTime, tvDate;
         private Switch muteSwitch;
@@ -151,24 +150,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             tvDate = itemView.findViewById(R.id.tvDate);
 
             muteSwitch = itemView.findViewById(R.id.toMute);
-
-
-
-//            // Here we update the toMute field of the event that the user has changed
-//            // We draw all the events from the user and find the relevant one to change
-//            muteSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                    ArrayList<CalendarEventModel> events = user.getEvents();
-//                    for(CalendarEventModel event : events){
-//                        if(event.getTitle().equals(tvTitle.getText())){
-//                            event.setToMute(b);
-//                        }
-//                    }
-//                    user.setEvents(events, true);
-//                }
-//            });
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
