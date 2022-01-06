@@ -37,7 +37,7 @@ public class FilterEditMessage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         setContentView(R.layout.activity_filter_edit_message);
         msg = findViewById(R.id.editFilterTwo);
         recyclerView = findViewById(R.id.recyclerViewFilter);
@@ -47,23 +47,27 @@ public class FilterEditMessage extends AppCompatActivity {
 
     }
 
+    /**
+     *  Getting a list of filters of the current user from the Database
+     *  Also updating the recycle view to show the filters on screen
+     */
     private void getFilterList() {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
+        // Getting a reference to the filters that the user set in the past in the Database
         DatabaseReference myRef = database.getReference(currUser+"/Filters");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Clear the current arraylist of filters and adding to it all the filters that written in the Database
                 arrayList.clear();
                 for(DataSnapshot d : snapshot.getChildren()){
                     if(d.exists()){
-//                        Log.i(TAG,"Try again current d: " + d.getKey());
                         FiltertModel t = d.getValue(FiltertModel.class);
-//                        Log.i(TAG,"Try again " + t.getFilter());
                         FilterEditMessage.arrayList.add(t);
                     }
                 }
+                // Update the Recycle View
                 FilterEditMessage.this.updateRe();
-
             }
 
             @Override
@@ -74,6 +78,9 @@ public class FilterEditMessage extends AppCompatActivity {
         FilterEditMessage.this.updateRe();
     }
 
+    /**
+     * Updates the recycle view
+     */
     public void updateRe(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FilterAdapter(this, FilterEditMessage.arrayList);
@@ -88,7 +95,6 @@ public class FilterEditMessage extends AppCompatActivity {
     }
 
     public void onSaveClickFilter(View view) {
-        // We need to talk with the user holder for this
         String s = msg.getText().toString();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference(currUser+"/Filters").push();
@@ -110,19 +116,12 @@ public class FilterEditMessage extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot snap : snapshot.getChildren()){
-//                            Log.i(TAG, "try again Current val of snap -  " + snap.getValue());
                             CalendarEventModel temp = snap.getValue(CalendarEventModel.class);
-//                            Log.i(TAG, "try again Current title  - " + temp.getTitle());
                             if(temp.getTitle().contains(s)){
-//                                Log.i(TAG, "try again Current val of snap -  " + snap.getValue());
                                 snap.child("toMute").getRef().setValue(true);
-//                                Log.i(TAG, "Saved title -  " + snap.child("title").getValue(String.class));
-//                                Log.i(TAG, "Saved toMute -  " + snap.child("toMute").getValue(Boolean.class));
-//                                Log.i(TAG, "try again Current title of snap -  " + snap.child("title").getValue(String.class));
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
@@ -136,8 +135,6 @@ public class FilterEditMessage extends AppCompatActivity {
 
             }
         });
-//        FiltertModel temp = new FiltertModel(s);
-//        myRef.setValue(temp);
     }
 
     public void onClickDel(View view) {
@@ -155,7 +152,6 @@ public class FilterEditMessage extends AppCompatActivity {
                         for (DataSnapshot snap: dataSnapshot.getChildren()) {
                             snap.getRef().removeValue();
 
-                            // If not working delete this---
                             myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -163,19 +159,14 @@ public class FilterEditMessage extends AppCompatActivity {
                                         CalendarEventModel temp = snapshot1.getValue(CalendarEventModel.class);
                                         if(temp.getTitle().contains(s)){
                                             snapshot1.child("toMute").getRef().setValue(false);
-//                                            Log.i(TAG, "Delete changed Title - " +  snapshot1.child("title").getValue(String.class));
-//                                            Log.i(TAG, "Delete changed  ToMute - " +  snapshot1.child("toMute").getValue(Boolean.class));
-
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
                             });
-                            // -----------------------------
                         }
                     }
 

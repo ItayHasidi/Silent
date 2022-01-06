@@ -29,17 +29,19 @@ public class UserModel {
     private ArrayList<CalendarEventModel> events;
     private DatabaseReference myRef;
     private ArrayList<FiltertModel> filters;
-//    private boolean hasSyncAlarm;
 
-    private boolean isWait = true;
+
 
     public UserModel(){
-        //getUser();
         contacts = new ArrayList<>();
         events = new ArrayList<>();
         filters = new ArrayList<>();
     }
 
+    /**
+     * Constructor who also updates Database
+     * @param email
+     */
     public UserModel(String email) {
         this.email = email;
         this.isPremium = true;
@@ -47,7 +49,6 @@ public class UserModel {
         this.contacts = new ArrayList<>();
         this.events = new ArrayList<>();
         this.filters = new ArrayList<>();
-//        this.hasSyncAlarm = false;
         updateFirebase();
     }
 
@@ -55,22 +56,38 @@ public class UserModel {
         return email;
     }
 
+    /**
+     * Set email and updating the Database
+     * @param email
+     */
     public void setEmail(String email) { this.email = email; updateFirebase("email", email); }
 
     public boolean isPremium() {
         return isPremium;
     }
 
+    /**
+     * Set the premium status and updating the Database
+     * @param premium
+     */
     public void setPremium(boolean premium) { isPremium = premium; updateFirebase("premium", isPremium); }
 
     public boolean isSilent() { return isSilent;}
 
+    /**
+     * Set the current mode of phone and updating the Database
+     * @param silent
+     */
     public void setSilent(boolean silent) { isSilent = silent; updateFirebase("silent", isSilent);}
 
     public ArrayList<ContactModel> getContacts() {
         return contacts;
     }
 
+    /**
+     * Set a list of ContactModel and updates the Database
+     * @param contacts
+     */
     public void setContacts(ArrayList<ContactModel> contacts) {
         this.contacts = new ArrayList<>(contacts);
         for(ContactModel tempCon: contacts){
@@ -82,12 +99,20 @@ public class UserModel {
         return events;
     }
 
+
+    /**
+     * Set a list of event to the current user and in some specific cases updating the Firebase database with
+     * this list.
+     * Also if the function updates the database then we check if each event is already set to mute in the database
+     * @param events
+     * @param isToUpdateFirebase
+     */
     public void setEvents(ArrayList<CalendarEventModel> events, boolean isToUpdateFirebase) {
         if(currUser == null){
             currUser =FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
         this.events = new ArrayList<>(events);
-        if(true) {
+        if(true /*isToUpdateFirebase*/) {
             for (CalendarEventModel event : events) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
                 DatabaseReference myRef = database.getReference(currUser);
@@ -104,16 +129,6 @@ public class UserModel {
                                    }
                                }
                            }
-//                            if(isPremium && type1.getKey().equals("Filters")){
-//                                for(DataSnapshot filt : type1.getChildren()){
-//                                    FiltertModel temp = filt.getValue(FiltertModel.class);
-//                                    if(event.getTitle().contains(temp.getFilter())){
-//                                        event.setToMute(true);
-//                                        break;
-//                                    }
-//                                }
-//                            }
-
                         }
                         updateFirebase("Events/" + event.getId(), event);
                     }
@@ -124,43 +139,22 @@ public class UserModel {
                 });
             }
         }
-
-
-
-
-//        if(isToUpdateFirebase) {
-//            for (CalendarEventModel event : events) {
-//                FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
-//                DatabaseReference myRef = database.getReference(currUser).child("Filters");
-//                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        for(DataSnapshot snapshot1 : snapshot.getChildren()){
-//                            FiltertModel temp = snapshot1.getValue(FiltertModel.class);
-//                            if(isPremium){
-//                                if(event.getTitle().contains(temp.getFilter())){
-//                                    event.setToMute(true);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        updateFirebase("Events/" + event.getId(), event);
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//            }
-//        }
     }
 
+    /**
+     * Update the status of "toMute" in the Database for specific event
+     * @param event
+     * @param isToUpdateFirebase
+     */
     public void setMuteEvent(CalendarEventModel event, boolean isToUpdateFirebase) {
         if(isToUpdateFirebase) {
             updateFirebase("Events/" + event.getId()+"/toMute/", event.isToMute());
         }
     }
 
+    /**
+     * Updates the Database with the user's information
+     */
     private void updateFirebase(){
         this.currUser = FirebaseAuth.getInstance().getUid();
         myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -168,6 +162,11 @@ public class UserModel {
         myRef.setValue(this);
     }
 
+    /**
+     * Updates the Database in the branch that represented by "cmd" and set it's value to "val"
+     * @param cmd
+     * @param val
+     */
     private void updateFirebase(String cmd, Object val){
         this.currUser = FirebaseAuth.getInstance().getUid();
         myRef = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -186,16 +185,19 @@ public class UserModel {
                 '}';
     }
 
+    /**
+     * Set a list of FilterModel
+     * @param tempArr
+     */
     public void setFilters(ArrayList<FiltertModel> tempArr) {
         this.filters = new ArrayList<>(tempArr);
     }
 
+    /**
+     * Get a list of filters of the current user
+     * @return
+     */
     public ArrayList<FiltertModel> getFilters(){
         return this.filters;
     }
-
-//    public boolean isHasSyncAlarm() {
-//        return hasSyncAlarm;
-//    }
-//    public void setHasSyncAlarm(boolean hasSyncAlarm) { this.hasSyncAlarm = hasSyncAlarm; updateFirebase("HasSyncAlarm", hasSyncAlarm);}
 }
