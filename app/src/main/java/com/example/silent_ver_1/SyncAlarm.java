@@ -13,7 +13,7 @@ import com.example.silent_ver_1.ui.user.UserModel;
 import java.util.Calendar;
 
 public final class SyncAlarm {
-    private static UserModel user;
+
     private static final String TAG = "SyncAlarm";
 
 
@@ -33,7 +33,7 @@ public final class SyncAlarm {
 
         PendingIntent displayIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         long t = calendar.getTimeInMillis();

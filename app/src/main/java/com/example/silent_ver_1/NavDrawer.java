@@ -59,7 +59,6 @@ public class NavDrawer extends AppCompatActivity {
 
         SharedPreferences pref = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         boolean syncedAlarm = pref.getBoolean("HasSyncAlarm", false);
-
         if(!syncedAlarm){
 //            Toast.makeText(this, "Created", Toast.LENGTH_LONG).show();
 //            user.setHasSyncAlarm(true);
@@ -69,19 +68,7 @@ public class NavDrawer extends AppCompatActivity {
             editor.apply();
 
             SyncAlarm.createSyncAlarm(getApplicationContext());
-//            SyncAlarm.checkAlarms(getApplicationContext());
-//            Intent alarmIntent = new Intent(getApplicationContext(), AlarmBroadcastReceiver.class);
-//
-//            alarmIntent.setAction("sync");
-//            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-//
-//            PendingIntent displayIntent = PendingIntent.getBroadcast(getApplicationContext().getApplicationContext(), 0, alarmIntent, 0);
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.set(Calendar.HOUR, 13);
-//            calendar.set(Calendar.MINUTE, 0);
-//            calendar.set(Calendar.SECOND, 0);
-//            long t = calendar.getTimeInMillis();
-//            alarmManager.set(AlarmManager.RTC_WAKEUP, t, displayIntent);
+
         }
 
 //        Toast.makeText(this, "Created"+user.isHasSyncAlarm(), Toast.LENGTH_LONG).show();
