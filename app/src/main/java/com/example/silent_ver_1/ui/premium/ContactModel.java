@@ -26,6 +26,12 @@ public class ContactModel {
         this.message = message;
     }
 
+    /**
+     * Constructor that also check the Database if the ContactModel have a specific message
+     * @param name
+     * @param number
+     * @param currUser
+     */
     public ContactModel(String name, String number, String currUser/*, Context context*/){
         this.name = name;
         this.number = number;

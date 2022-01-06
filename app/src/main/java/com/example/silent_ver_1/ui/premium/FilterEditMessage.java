@@ -43,13 +43,14 @@ public class FilterEditMessage extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewFilter);
         saveBtn = findViewById(R.id.saveBtnFilter);
         delBtn = findViewById(R.id.deleteBtn);
+        // Get the filterList from the database
         getFilterList();
 
     }
 
     /**
      *  Getting a list of filters of the current user from the Database
-     *  Also updating the recycle view to show the filters on screen
+     *  Also updating the recycler view to show the filters on screen
      */
     private void getFilterList() {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -66,7 +67,7 @@ public class FilterEditMessage extends AppCompatActivity {
                         FilterEditMessage.arrayList.add(t);
                     }
                 }
-                // Update the Recycle View
+                // Update the Recycler View
                 FilterEditMessage.this.updateRe();
             }
 
@@ -79,7 +80,7 @@ public class FilterEditMessage extends AppCompatActivity {
     }
 
     /**
-     * Updates the recycle view
+     * Updates the recycler view with the updated filter list
      */
     public void updateRe(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,6 +95,13 @@ public class FilterEditMessage extends AppCompatActivity {
         });
     }
 
+    /**
+     * If the user pressed the save button to save a certain filter then this function check if the filter
+     * Is already exist in the database, if it exist the there is no need to save it as a new filter
+     * Otherwise we add the filter to the Database
+     * Also this function set each event that contains the filter in it's title to silent mode
+     * @param view
+     */
     public void onSaveClickFilter(View view) {
         String s = msg.getText().toString();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -104,17 +112,21 @@ public class FilterEditMessage extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // For each filter in the Database of the current user we check if the filter is exist
                 for(DataSnapshot temp: snapshot.getChildren()){
                     FiltertModel f = temp.getValue(FiltertModel.class);
                     if(f.getFilter().equals(s)){
                         return;
                     }
                 }
+                // If the filter is not exist then create a new FilterModel and save it to the database
                 FiltertModel temp = new FiltertModel(s);
                 myRef.setValue(temp);
                 ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        /* For each event in the Database check if the title contains the Filter
+                         If it contains set the event to silent Mode */
                         for(DataSnapshot snap : snapshot.getChildren()){
                             CalendarEventModel temp = snap.getValue(CalendarEventModel.class);
                             if(temp.getTitle().contains(s)){
@@ -137,6 +149,14 @@ public class FilterEditMessage extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * If the user wish to delete a certain filter then:
+     * This function checks if the filter exist in the Database under the user branch
+     * If it exists then we remove the filter from the Database
+     * Each event that contains the filter in the title will be changed to unMute mode
+     * @param view
+     */
     public void onClickDel(View view) {
         String s = msg.getText().toString();
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -144,7 +164,9 @@ public class FilterEditMessage extends AppCompatActivity {
         DatabaseReference myRef2 = database.getReference(currUser).child("Events");
         for(FiltertModel f : arrayList){
             if(f.getFilter().equals(s)){
+                // Removing the filter from the arraylist
                 arrayList.remove(f);
+                // Removing the filter from the Database
                 Query query = myRef.child("/Filters").orderByChild("filter").equalTo(s);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -152,6 +174,7 @@ public class FilterEditMessage extends AppCompatActivity {
                         for (DataSnapshot snap: dataSnapshot.getChildren()) {
                             snap.getRef().removeValue();
 
+                            // For each event in the Database that contains filter in the title will be set to unMute mode
                             myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {

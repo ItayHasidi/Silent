@@ -46,12 +46,18 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder
         holder.filterText.setText(model.getFilter());
     }
 
-
+    /**
+     * Getting the number of items in the arraylist
+     * @return
+     */
     @Override
     public int getItemCount() {
         return arrayList.size();
     }
 
+    /**
+     * View that represent a filter in the recycler view
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView filterText;
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {

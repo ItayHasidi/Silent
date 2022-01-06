@@ -58,6 +58,7 @@ public class ContactEditMessage extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(ContactEditMessage.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(ContactEditMessage.this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
         } else{
+            // If the application got the permissions from the user then
             getContactList();
         }
     }
@@ -122,8 +123,6 @@ public class ContactEditMessage extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
             DatabaseReference myRef = database.getReference(currUser+"/Contacts/"+arrayList.get(curPosition).getNumber());
             myRef.setValue(msg.getText().toString());
-
-//            UserHolder.getUser().setContacts(arrayList);
         }
     }
 
