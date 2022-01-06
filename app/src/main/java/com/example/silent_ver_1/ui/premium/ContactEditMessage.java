@@ -54,15 +54,21 @@ public class ContactEditMessage extends AppCompatActivity {
         checkPermission();
     }
 
+    /**
+     * Request permission from the user to read the contacts
+     */
     private void checkPermission() {
         if(ContextCompat.checkSelfPermission(ContactEditMessage.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(ContactEditMessage.this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
         } else{
-            // If the application got the permissions from the user then
+            // If the application got the permissions from the user then call the function to get the list of contacts
             getContactList();
         }
     }
 
+    /**
+     * Get a list of contacts from the user's phone and show it to the user in the recycler view
+     */
     private void getContactList() {
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
         String sort = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
@@ -70,16 +76,16 @@ public class ContactEditMessage extends AppCompatActivity {
                 null, sort);
         if(cursor.getCount() > 0){
             while(cursor.moveToNext()){
-
+                // getting the id of the contact
                 int str1 = cursor.getColumnIndex(ContactsContract.Contacts._ID);
                 String id = cursor.getString(str1);
+                //getting the display name of the contact
                 int str2 = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                 String name = cursor.getString(str2);
 
                 Uri uriPhone = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
                 String selection = ContactsContract.CommonDataKinds.Phone.CONTACT_ID
                         + " =?";
-                Log.i(TAG, "uri calendar: "+uriPhone.toString()+" , "+selection);
                 Cursor phoneCursor = getContentResolver().query(uriPhone,
                         null, selection, new String[]{id}, null);
 
@@ -87,6 +93,7 @@ public class ContactEditMessage extends AppCompatActivity {
                     int str3 = phoneCursor.getColumnIndex(
                             ContactsContract.CommonDataKinds.Phone.NUMBER);
                     String number = phoneCursor.getString(str3);
+                    // Creating a contractModel that hold the data and adding it to the arraylist
                     ContactModel model = new ContactModel(name, number, currUser);
                     arrayList.add(model);
                     phoneCursor.close();
@@ -94,6 +101,7 @@ public class ContactEditMessage extends AppCompatActivity {
             }
             cursor.close();
         }
+        // Show the list of the user's contacts with the specific message for the chosen contact in the recycler view
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mainAdapter = new MainAdapter(this, arrayList);
         recyclerView.setAdapter(mainAdapter);
@@ -117,6 +125,10 @@ public class ContactEditMessage extends AppCompatActivity {
         }
     }
 
+    /**
+     * If the user wish to save a specific message for a certain contact then this function will upload it to the Database
+     * @param view
+     */
     public void onSaveClick(View view){
         if(curPosition != -1){
             arrayList.get(curPosition).setMessage(msg.getText().toString());

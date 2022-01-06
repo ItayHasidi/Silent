@@ -28,9 +28,6 @@
             android:exported="true"></receiver>
 
         <activity
-            android:name=".ui.premium.SyncCalendarActivity"
-            android:exported="false" />
-        <activity
             android:name=".CalendarActivity"
             android:exported="false" />
         <activity

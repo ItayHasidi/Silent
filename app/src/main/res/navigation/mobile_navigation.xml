@@ -15,21 +15,6 @@
             app:destination="@id/nav_home" />
     </fragment>
     <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.example.silent_ver_1.ui.settings.SettingsFragment"
-        android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/nav_sync_now"
-        android:name="com.example.silent_ver_1.ui.syncnow.SyncNowFragment"
-        android:label="@string/sync_now"
-        tools:layout="@layout/fragment_sync_now" />
-    <fragment
-        android:id="@+id/nav_sync_options"
-        android:name="com.example.silent_ver_1.ui.syncoptions.SyncOptionsFragment"
-        android:label="@string/sync_options"
-        tools:layout="@layout/fragment_sync_options" />
-    <fragment
         android:id="@+id/nav_premium"
         android:name="com.example.silent_ver_1.ui.premium.PremiumFragment"
         android:label="@string/premium"

@@ -25,12 +25,13 @@ import com.example.silent_ver_1.NavDrawer;
 import com.example.silent_ver_1.R;
 import com.example.silent_ver_1.UserHolder;
 import com.example.silent_ver_1.databinding.FragmentUserBinding;
-import com.example.silent_ver_1.ui.settings.SettingsViewModel;
+
+import com.example.silent_ver_1.ui.user.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserFragment extends Fragment {
-    private SettingsViewModel settingsViewModel;
+    private UserViewModel userViewModel;
     private FragmentUserBinding binding;
     private String uid, email;
     private FirebaseAuth mAuth;
@@ -93,7 +94,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         return root;
     }
