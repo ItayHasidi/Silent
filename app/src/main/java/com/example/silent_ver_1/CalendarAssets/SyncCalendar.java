@@ -51,7 +51,6 @@ import java.util.Date;
 public final class SyncCalendar extends AppCompatActivity {
 
     private static long todayStartMilli, todayEndMilli;
-//    private static ArrayList<CalendarEventModel> arrayList = new ArrayList<>();
     private static String currUser;
     private static UserModel user;
     private static FragmentHomeBinding binding;
@@ -69,8 +68,13 @@ public final class SyncCalendar extends AppCompatActivity {
         Log.i(TAG, "User: "+user);
     }
 
+    /**
+     * Creates a query to the OS that receives all the calendar events within the time-span that was sent.
+     * @param uri
+     * @param context
+     * @param arrayList
+     */
     private static void getEventsOfTheDay(Uri.Builder uri, Context context, ArrayList<CalendarEventModel> arrayList){
-        //View root = new View();// binding.getRoot();
         user = UserHolder.getUser();
         Uri eventsUri = uri.build();
         Cursor cursor = null;
@@ -94,14 +98,6 @@ public final class SyncCalendar extends AppCompatActivity {
 
 
                 boolean toMute = false;
-
-//                for(CalendarEventModel ev : user.getEvents()) {
-//                    if(ev.getId() == Integer.parseInt(id)){
-//                        if (ev != null) {
-//                            toMute = ev.isToMute();
-//                        }
-//                    }
-//                }
                 if(user.isPremium()){
                     for(FiltertModel f : UserHolder.getUser().getFilters()){
                         if(title.contains(f.getFilter())){
@@ -130,19 +126,20 @@ public final class SyncCalendar extends AppCompatActivity {
                 displayIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, end.getTime(), displayIntent);
-//                FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
-//                String currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//                DatabaseReference myRef = database.getReference(currUser+"/Events/"+model.getId());
-
             }
         }
         cursor.close();
         Log.i(TAG, "User: "+user);
         user.setEvents(arrayList, true);
-
-//
     }
 
+    /**
+     * Gets the starting time of the query in milliseconds and calculates the end time(within 24 hours from starting time),
+     * creates a query.
+     * @param milliseconds
+     * @param context
+     * @param arrayList
+     */
     public static void getEventsOfTheDay(long milliseconds, Context context, ArrayList<CalendarEventModel> arrayList){
         todayStartMilli = milliseconds;
         todayEndMilli = todayStartMilli + 86400000; // 86 400 000 is 1 day in milliseconds
@@ -151,10 +148,19 @@ public final class SyncCalendar extends AppCompatActivity {
         ContentUris.appendId(uri, todayStartMilli);
         ContentUris.appendId(uri, todayEndMilli);
 
-//        Uri eventsUri = uri.build();
         getEventsOfTheDay(uri, context, arrayList);
     }
 
+    /**
+     * Translates a date to milliseconds and calculates the end time(within 24 hours from starting time),
+     * creates a query.
+     * @param year
+     * @param month
+     * @param day
+     * @param context
+     * @param arrayList
+     * @throws ParseException
+     */
     public static void getEventsOfTheDay(int year, int month, int day, Context context, ArrayList<CalendarEventModel> arrayList) throws ParseException {
         Uri.Builder uri = CalendarContract.Instances.CONTENT_URI.buildUpon();
         if(year == 0){
@@ -174,14 +180,11 @@ public final class SyncCalendar extends AppCompatActivity {
             String startDate = dayStr+"."+monthStr+"."+year+" 00:00";
             String endDate = dayStr+"."+monthStr+"."+year+" 23:59";
 
-//            Log.i(TAG, "Calendar: Date: "+startDate+" , "+endDate);
-
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             Date dateStart = sdf.parse(startDate);
             Date dateEnd = sdf.parse(endDate);
             long millisStart = dateStart.getTime() + 7200000;// GMT+02:00
             long millisEnd = dateEnd.getTime() + 7200000;
-
 
             ContentUris.appendId(uri, millisStart);
             ContentUris.appendId(uri, millisEnd);
@@ -190,6 +193,10 @@ public final class SyncCalendar extends AppCompatActivity {
         getEventsOfTheDay(uri, context, arrayList);
     }
 
+    /**
+     * Calculates the time of day 00:00:00 in millisecond of this day.
+     * @return
+     */
     private static long getStartOfDayInMillis() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -199,18 +206,25 @@ public final class SyncCalendar extends AppCompatActivity {
         return calendar.getTimeInMillis();
     }
 
+    /**
+     * Calculates the time of day 00:00:00 in millisecond of next day.
+     * @return
+     */
     private static long getEndOfDayInMillis() {
         // Add one day's time to the beginning of the day.
         // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         return getStartOfDayInMillis() + (24 * 60 * 60 * 1000 - 1);
     }
 
+    /**
+     * Deletes from the database all the events that have already ended.
+     * @param currTime
+     */
     public static void deletePastEvents(long currTime){
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
         if(currUser == null){
             currUser =FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
-
         DatabaseReference myRef = database.getReference(currUser);
         Query query = myRef.child("/Events");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -218,12 +232,8 @@ public final class SyncCalendar extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot snap : snapshot.getChildren()){
                     if(snap.exists()){
-//                        Log.i(TAG,"try again snap = " + snap.getKey());
                         CalendarEventModel c = snap.getValue(CalendarEventModel.class);
-                        Log.i(TAG,"try again c.title = " + c.getTitle());
-//                        Log.i(TAG,"try again c.endDate = " + c.getEndDate());
                         if(c.getEndDate().getTime() < currTime){
-                            Log.i(TAG, "Comment -  Delete past event - " + c.getTitle());
                             snap.getRef().removeValue();
                         }
                         boolean found = false;
@@ -234,76 +244,14 @@ public final class SyncCalendar extends AppCompatActivity {
                             }
                         }
                         if(!found){
-                            Log.i(TAG, "Comment -  Delete not exist - " + c.getTitle());
                             snap.getRef().removeValue();
                         }
                     }
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
     }
-
-/*
-    public void getEventsOfTheDay(long todayMilli) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://silent-android-application-default-rtdb.europe-west1.firebasedatabase.app/");
-        currUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        this.todayStartMilli = todayMilli;
-        this.todayEndMilli = this.todayStartMilli + 86400000; // 86 400 000 is 1 day in milliseconds
-
-        Uri.Builder uri = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(uri, this.todayStartMilli);
-        ContentUris.appendId(uri, this.todayEndMilli);
-
-
-
-        Uri eventsUri = uri.build();
-        Log.i(TAG, "Sync Log: "+this.todayStartMilli+" , "+todayEndMilli+" , "+ eventsUri);
-        Cursor cursor = null;
-    //        Log.i(TAG,"event:"+ uri.toString());
-        // gets all the events of the day
-
-        cursor = getBaseContext().getContentResolver().query(eventsUri, null, null,
-                null, CalendarContract.Instances.DTSTART + " ASC");
-        // iterates through all th events and prints them
-            if(cursor.getCount() > 0){
-            while(cursor.moveToNext()){
-                int titleCur = cursor.getColumnIndex(CalendarContract.Instances.TITLE);
-                String title = cursor.getString(titleCur);
-                int descCur = cursor.getColumnIndex(CalendarContract.Instances.DESCRIPTION);
-                String desc = cursor.getString(descCur);
-                int idCur = cursor.getColumnIndex(CalendarContract.Instances.EVENT_ID);
-                String id = cursor.getString(idCur);
-                int startDateCur = cursor.getColumnIndex(CalendarContract.Instances.BEGIN);
-                String startDate = cursor.getString(startDateCur);
-                Date start = new Date(Long.parseLong(startDate));
-                int endDateCur = cursor.getColumnIndex(CalendarContract.Instances.END);
-                String endDate = cursor.getString(endDateCur);
-                Date end = new Date(Long.parseLong(endDate));
-
-    //                Log.i(TAG,"event:"+ title + " , "+ start+" , "+end);
-
-                CalendarEventModel model = new CalendarEventModel(start, end, desc, title, id);
-                arrayList.add(model);
-
-                DatabaseReference myRef = database.getReference(currUser+"/Events/"+model);
-
-    //                getDate();
-    //                Log.i(TAG,"event:"+ title + " , "+ startMin+" , "+endMin+" , "+desc+" , "+startDate+" , "+endDate);
-    //                Log.i(TAG, "event: "+model.toString());
-            }
-        }
-        cursor.close();
-    }
-*/
-
-
-
 }

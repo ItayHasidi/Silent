@@ -43,4 +43,14 @@
         android:textColor="@color/white"
         android:text="Button" />
 
+    <Button
+        android:id="@+id/syncBtnNavDrawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sync Calendar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </LinearLayout>
