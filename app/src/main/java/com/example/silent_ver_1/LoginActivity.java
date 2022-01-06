@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * In this class the user can log onto the app using an existing account.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mEmail, mPass;
@@ -28,10 +31,18 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Moves the user to the Register page.
+     * @param view
+     */
     public void btnRegister(View view){
         startActivity(new Intent(LoginActivity.this, MainActivity.class));// עוברים מסך
     }
 
+    /**
+     * Validates that the user has given accurate details and logs the user on.
+     * @param view
+     */
     public void btnLogin(View view){
 
         mEmail = findViewById(R.id.email);

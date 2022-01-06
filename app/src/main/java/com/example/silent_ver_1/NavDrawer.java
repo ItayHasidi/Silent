@@ -54,6 +54,12 @@ public class NavDrawer extends AppCompatActivity {
     public static final String PREF_NAME = "HasSynced";
 
 
+    /**
+     * Creates and shows all the elements that are shown in the navigation drawer.
+     * The Nav drawer show the user his email as well as the ability so sync the calendar manually and the ability to logout.
+     * The Nav drawer also allows the user to navigate between all the pages easily.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,19 +69,12 @@ public class NavDrawer extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         boolean syncedAlarm = pref.getBoolean("HasSyncAlarm", false);
         if(!syncedAlarm){
-//            Toast.makeText(this, "Created", Toast.LENGTH_LONG).show();
-//            user.setHasSyncAlarm(true);
-            Log.i(TAG, "try again Enjoy from auto sync");
             SharedPreferences.Editor editor = getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit();
             editor.putBoolean("HasSyncAlarm", true);
             editor.apply();
 
             SyncAlarm.createSyncAlarm(getApplicationContext());
-
         }
-
-//        Toast.makeText(this, "Created"+user.isHasSyncAlarm(), Toast.LENGTH_LONG).show();
-//        user = UserHolder.getUser();
 
         binding = ActivityNavDrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -102,8 +101,6 @@ public class NavDrawer extends AppCompatActivity {
         txtHeader = header.findViewById(R.id.userTxtHeader);
         syncBtn = header.findViewById(R.id.syncBtnNavDrawer);
 
-
-
         if(currentUser != null){
             headerBtn.setText("Logout");
             txtHeader.setText("User: "+username);
@@ -123,36 +120,24 @@ public class NavDrawer extends AppCompatActivity {
             }
         });
 
-
         syncBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 long time = System.currentTimeMillis();
-//                SyncCalendarActivity syncCalendar = new SyncCalendarActivity();
                 SyncCalendar.getEventsOfTheDay(time, getApplicationContext(), new ArrayList<>());
                 SyncCalendar.deletePastEvents(time);
-
-                Log.d(TAG, "Sync Log finished");
-
             }
         });
-
-
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_nav_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_PROVIDER_CHANGED);
         filter.addDataScheme("content");
         filter.addDataAuthority("com.android.calendar", null);
         registerReceiver(new CalendarEventReceiver(), filter);
-
-//        Log.i(TAG, "try again recieved syncalarmstatus - " + user.isHasSyncAlarm());
-
     }
 
 
@@ -164,6 +149,9 @@ public class NavDrawer extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    /**
+     * Checks if the app has the permissions it needs.
+     */
     private void checkPermission() {
         if(ContextCompat.checkSelfPermission(NavDrawer.this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(NavDrawer.this, new String[]{Manifest.permission.READ_CONTACTS}, 100);

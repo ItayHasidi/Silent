@@ -21,6 +21,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The first page that is loaded and the page where the user can register to the app.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -33,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
-
-
     }
 
+    /**
+     * Checks if there is a user logged on, in case there is the function loads the NavDrawer page and updates the user from the DB.
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -49,11 +52,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks for permissions.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * Processes all the data given from the user and creates a new user in Firebase.
+     * @param view
+     */
     public void btnRegister(View view) {
         mEmail = findViewById(R.id.email);
         mPass = findViewById(R.id.password);
@@ -84,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        /**
+         * This is where the user is created in the Firebase.
+         */
         mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,8 +117,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * In case the user has already an account, the user can be directed to the Login page.
+     * @param view
+     */
     public void btnLogin(View view){
         startActivity(new Intent(MainActivity.this, LoginActivity.class));// עוברים מסך
     }
-
 }

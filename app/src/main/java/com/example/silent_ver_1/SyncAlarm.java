@@ -17,14 +17,13 @@ public final class SyncAlarm {
     private static final String TAG = "SyncAlarm";
 
 
-    public SyncAlarm(){
-//        user = new UserModel();
-//        user = UserHolder.getUser();
-    }
+    public SyncAlarm(){}
 
+    /**
+     * Creates a 'sync' alarm that sets off each day at 06:00 to sync the DB with the events that are saved on the users phone.
+     * @param context
+     */
     public static void createSyncAlarm(Context context){
-//        user = UserHolder.getUser();
-//        user.setHasSyncAlarm(true);
         Intent alarmIntent = new Intent(context, AlarmBroadcastReceiver.class);
 
         alarmIntent.setData(Uri.parse("custom://" +"sync"));
@@ -38,17 +37,5 @@ public final class SyncAlarm {
         calendar.set(Calendar.SECOND, 0);
         long t = calendar.getTimeInMillis();
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,t,AlarmManager.INTERVAL_DAY,displayIntent);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, t, displayIntent);
-        Log.i(TAG,"try again created sync alarm - ");
     }
-
-//    public static void checkAlarms(Context context){
-//        AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(context.ALARM_SERVICE);
-//        AlarmManager.AlarmClockInfo ai;
-//        while((ai = alarmManager.getNextAlarmClock()) != null){
-//            Log.i(TAG, "try again - Next alarm is " + ai.toString());
-//        }
-//    }
-
-
 }
